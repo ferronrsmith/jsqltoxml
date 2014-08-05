@@ -1,4 +1,4 @@
-package jsqltoxml;
+package com.uwi.config;
 
 import net.sf.jsqlparser.JSQLParserException;
 

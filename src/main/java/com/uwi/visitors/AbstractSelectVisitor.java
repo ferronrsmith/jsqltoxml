@@ -1,4 +1,4 @@
-package ext;
+package com.uwi.visitors;
 
 import net.sf.jsqlparser.statement.select.SelectVisitor;
 import net.sf.jsqlparser.statement.select.SetOperationList;

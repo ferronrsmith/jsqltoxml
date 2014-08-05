@@ -1,4 +1,4 @@
-package jsqltoxml;
+package com.uwi.config;
 
 import java.util.List;
 
@@ -13,9 +13,8 @@ import org.dom4j.Element;
 import com.uwi.utils.Misc;
 import com.uwi.utils.QueryXML;
 import com.uwi.utils.QueryXML.Type;
-
-import ext.AbstractSelectVisitor;
-import ext.DefaultSelectVisitor;
+import com.uwi.visitors.AbstractSelectVisitor;
+import com.uwi.visitors.DefaultSelectVisitor;
 
 // TODO: Auto-generated Javadoc
 /**
