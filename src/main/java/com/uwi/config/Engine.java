@@ -12,7 +12,6 @@ import com.uwi.cmd.Loader;
  * The Class Engine.
  */
 public class Engine {
-
 	/**
 	 * The main method.
 	 *
@@ -48,7 +47,5 @@ public class Engine {
 			System.err.println(e.getMessage());
 			System.err.println("Invalid SQL Statement ..");
 		}
-
 	}
-
 }

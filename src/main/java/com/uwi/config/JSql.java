@@ -10,9 +10,9 @@ import net.sf.jsqlparser.util.TablesNamesFinder;
 
 import org.dom4j.Element;
 
+import com.uwi.enums.ResultType;
 import com.uwi.utils.Misc;
 import com.uwi.utils.QueryXML;
-import com.uwi.utils.QueryXML.Type;
 import com.uwi.visitors.AbstractSelectVisitor;
 import com.uwi.visitors.DefaultSelectVisitor;
 
@@ -25,6 +25,17 @@ import com.uwi.visitors.DefaultSelectVisitor;
  *
  */
 public class JSql {
+
+	/**
+	 * Xpath string.
+	 *
+	 * @param sql            the sql
+	 * @return the string
+	 * @throws JSQLParserException the JSQL parser exception
+	 */
+	public static String generateXpath(String sql) throws JSQLParserException {
+		return visit(sql).getXPath();
+	}
 
 	/**
 	 * Parses the sql query and return an element.
@@ -40,7 +51,7 @@ public class JSql {
 			throws JSQLParserException {
 		DefaultSelectVisitor visitor = visit(sql);
 		List<Element> result = new QueryXML<Element>().query(
-				visitor.getSelect(), xmlfile, QueryXML.Type.ELEMENT);
+				visitor.getXPath(), xmlfile, ResultType.ELEMENT);
 		for (int i = 0; i < result.size(); i++) {
 			System.out.println(result.get(i));
 		}
@@ -60,7 +71,7 @@ public class JSql {
 	 * @throws JSQLParserException
 	 *             the JSQL parser exception
 	 */
-	public static void parse(String xmlfile, String sql, Type type,
+	public static void parse(String xmlfile, String sql, ResultType type,
 			String outputFile) throws JSQLParserException {
 		List<String> result = parseXML(xmlfile, sql, type, outputFile);
 		for (int i = 0; i < result.size(); i++) {
@@ -83,10 +94,10 @@ public class JSql {
 	 * @throws JSQLParserException
 	 *             the JSQL parser exception
 	 */
-	public static List<String> parseXML(String xmlfile, String sql, Type type,
-			String outputFile) throws JSQLParserException {
+	public static List<String> parseXML(String xmlfile, String sql,
+			ResultType type, String outputFile) throws JSQLParserException {
 		DefaultSelectVisitor visitor = visit(sql);
-		List<String> result = new QueryXML<String>().query(visitor.getSelect(),
+		List<String> result = new QueryXML<String>().query(visitor.getXPath(),
 				xmlfile, type);
 
 		Misc.saveToFile(outputFile, result);

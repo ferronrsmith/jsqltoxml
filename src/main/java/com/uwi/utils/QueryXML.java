@@ -12,6 +12,8 @@ import org.jaxen.JaxenException;
 import org.jaxen.XPath;
 import org.jaxen.dom4j.Dom4jXPath;
 
+import com.uwi.enums.ResultType;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class QueryXML.
@@ -22,33 +24,12 @@ import org.jaxen.dom4j.Dom4jXPath;
 public class QueryXML<E> {
 
 	/**
-	 * The Enum Type.
-	 */
-	public enum Type {
-
-		/** The xml. */
-		XML,
-		/** The data. */
-		DATA,
-		/** The path. */
-		PATH,
-		/** The string. */
-		STRING,
-		/** The text. */
-		TEXT,
-		/** The text trim. */
-		TEXT_TRIM, 
- /** The trim. */
- TRIM,
-		/** The element. */
-		ELEMENT
-	}
-
-	/**
 	 * Gets the text from an {@link Element} passing in a custom trim function.
 	 *
-	 * @param element            the element
-	 * @param trim            the trim
+	 * @param element
+	 *            the element
+	 * @param trim
+	 *            the trim
 	 * @return the text
 	 */
 	private String getText(Element element, boolean trim) {
@@ -71,7 +52,7 @@ public class QueryXML<E> {
 	 * @return the list
 	 */
 	public List<E> query(String xpath, String xmlFile) {
-		return query(xpath, xmlFile, Type.XML);
+		return query(xpath, xmlFile, ResultType.XML);
 	}
 
 	/**
@@ -86,7 +67,7 @@ public class QueryXML<E> {
 	 * @return the list
 	 */
 	@SuppressWarnings("unchecked")
-	public List<E> query(String xpath, String xmlFileName, Type type) {
+	public List<E> query(String xpath, String xmlFileName, ResultType type) {
 		List<E> result = new ArrayList<E>();
 		File xmlFile = new File(xmlFileName);
 		SAXReader reader = new SAXReader();

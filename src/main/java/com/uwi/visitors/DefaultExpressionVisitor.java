@@ -1,8 +1,12 @@
 package com.uwi.visitors;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import net.sf.jsqlparser.expression.AllComparisonExpression;
 import net.sf.jsqlparser.expression.AnalyticExpression;
@@ -55,6 +59,8 @@ import net.sf.jsqlparser.expression.operators.relational.RegExpMatchOperator;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.SubSelect;
 
+import com.uwi.ds.BinaryExpressionTree;
+import com.uwi.enums.ExpressionType;
 import com.uwi.utils.KeyValue;
 
 // TODO: Auto-generated Javadoc
@@ -63,54 +69,68 @@ import com.uwi.utils.KeyValue;
  */
 public class DefaultExpressionVisitor implements ExpressionVisitor {
 
-	/**
-	 * The Enum Type.
-	 */
-	enum Type {
-
-		/** The or. */
-		OR("or"),
-		/** The and. */
-		AND("and"),
-		/** The any. */
-		ANY(""),
-		/** The like. */
-		LIKE("like");
-
-		/** The value. */
-		private String value;
-
-		/**
-		 * Instantiates a new type.
-		 *
-		 * @param arg
-		 *            the arg
-		 */
-		Type(String arg) {
-			this.value = arg;
-		}
-
-		/**
-		 * Gets the value.
-		 *
-		 * @return the value
-		 */
-		public String getValue() {
-			return value;
-		}
-	}
-
 	/** The has paren. */
 	private boolean hasParen = false;
 
 	/** The columns. */
-	Set<KeyValue> columns; // handle duplicate columns
+	List<KeyValue> columns; // handle duplicate columns
 
 	/** The columns. */
-	Set<KeyValue> _temp; // utility hash for saving data for later
+	List<KeyValue> _temp; // utility hash for saving data for later
 
-	/** The current type. */
-	Type currentType;
+	/** The expression tree. */
+	BinaryExpressionTree expressionTree;
+
+	private Collection<KeyValue> flatten(Collection<KeyValue> _temp2) {
+		List<KeyValue> result = new ArrayList<KeyValue>();
+		LinkedHashMap<String, List<KeyValue>> bucket = new LinkedHashMap<String, List<KeyValue>>();
+		Iterator<KeyValue> iter = _temp2.iterator();
+		while (iter.hasNext()) {
+			KeyValue kv = iter.next();
+			if (bucket.containsKey(kv.getMetaData())) {
+				bucket.get(kv.getMetaData()).add(kv);
+			} else {
+				List<KeyValue> kvs = new ArrayList<KeyValue>();
+				kvs.add(kv);
+				bucket.put(kv.getMetaData().toString(), kvs);
+			}
+		}
+		Iterator<Entry<String, List<KeyValue>>> bIter = bucket.entrySet()
+				.iterator();
+		while (bIter.hasNext()) {
+			StringBuilder sb = new StringBuilder();
+			Entry<String, List<KeyValue>> entrySet = bIter.next();
+			List<KeyValue> kList = entrySet.getValue();
+			for (int i = 0; i < kList.size(); i++) {
+				KeyValue keyValue = entrySet.getValue().get(i);
+				sb.append(keyValue.getValue());
+				if (i != kList.size() - 1) {
+					sb.append(" ");
+					sb.append(keyValue.getKey());
+					sb.append(" ");
+				}
+			}
+			result.add(new KeyValue(kList.get(0).getKey(), sb.toString(), kList
+					.get(0).getMetaData()));
+		}
+
+		// shift
+
+		if (result.size() > 1) {
+			for (int i = 0; i < result.size(); i++) {
+				KeyValue outer = result.get(i);
+				for (int j = 1; j < result.size(); j++) {
+					KeyValue inner = result.get(j);
+					if (!hasParen(inner.getValue())
+							| (hasParen(outer) && hasParen(inner))) {
+						outer.setKey(result.get(j).getKey());
+					}
+				}
+			}
+		}
+
+		return result;
+	}
 
 	/**
 	 * Gets the where clause.
@@ -120,17 +140,31 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 * @return the where clause
 	 */
 	public String getWhereClause(Expression exp) {
+		// don't traverse if null
+		if (exp == null) {
+			return null;
+		}
 		init();
 		exp.accept(this);
+		// [{and,name/text()='India'}, {and,food/text()='roti'}]
 		return merge(columns);
+	}
+
+	private boolean hasParen(KeyValue kv) {
+		return hasParen(kv.getValue());
+	}
+
+	private boolean hasParen(String inc) {
+		return Pattern.matches("^\\(.*\\)$", inc);
 	}
 
 	/**
 	 * Inits the.
 	 */
 	private void init() {
-		columns = new HashSet<KeyValue>();
-		_temp = new HashSet<KeyValue>();
+		columns = new ArrayList<KeyValue>();
+		_temp = new ArrayList<KeyValue>();
+		expressionTree = new BinaryExpressionTree();
 	}
 
 	/**
@@ -170,7 +204,10 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 				: "%s/text()=%s", exp.getLeftExpression(), exp
 				.getRightExpression());
 
-		KeyValue keyValue = new KeyValue(currentType.getValue(), equalTo);
+		// check if currentType is null
+		KeyValue keyValue = new KeyValue(
+				expressionTree.peekAtType().getValue(), equalTo,
+				expressionTree.peekAtId());
 
 		if (hasParen) {
 			_temp.add(keyValue);
@@ -186,7 +223,8 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 *            the _temp
 	 * @return the string
 	 */
-	public String merge(Set<KeyValue> _temp) {
+	public String merge(Collection<KeyValue> _temp) {
+		_temp = flatten(_temp);
 		int size = _temp.size();
 		int count = 0;
 		StringBuilder sb = new StringBuilder();
@@ -210,7 +248,9 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	public void mergeParenRecords() {
 		// select * from country where food='roti' and (food='roti' or
 		// food='hotdog')
-		columns.add(new KeyValue("", String.format("( %s )", merge(_temp))));
+		columns.add(new KeyValue(_temp.get(0).getKey(), String.format("( %s )",
+				merge(_temp)), _temp.get(0).getMetaData()));
+		_temp = new ArrayList<KeyValue>();
 	}
 
 	/**
@@ -257,7 +297,6 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 */
 	@Override
 	public void visit(AndExpression andExpression) {
-		currentType = Type.AND;
 		visitBinaryExpression(andExpression);
 	}
 
@@ -545,7 +584,8 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	@Override
 	public void visit(LikeExpression likeExpression) {
 		// TODO Auto-generated method stub
-		columns.add(new KeyValue(Type.LIKE.value, likeOperand(likeExpression)));
+		columns.add(new KeyValue(ExpressionType.LIKE.getValue(),
+				likeOperand(likeExpression)));
 	}
 
 	/**
@@ -663,7 +703,6 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 */
 	@Override
 	public void visit(OrExpression orExpression) {
-		currentType = Type.OR;
 		visitBinaryExpression(orExpression);
 	}
 
@@ -784,8 +823,9 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 *            the binary expression
 	 */
 	public void visitBinaryExpression(BinaryExpression binaryExpression) {
+		expressionTree.add(binaryExpression);
 		binaryExpression.getLeftExpression().accept(this);
 		binaryExpression.getRightExpression().accept(this);
+		expressionTree.remove();
 	}
-
 }

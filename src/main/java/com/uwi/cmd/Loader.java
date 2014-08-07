@@ -2,7 +2,7 @@ package com.uwi.cmd;
 
 import org.kohsuke.args4j.Option;
 
-import com.uwi.utils.QueryXML.Type;
+import com.uwi.enums.ResultType;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -20,7 +20,7 @@ public class Loader {
 
 	/** The type. */
 	@Option(name = "-type", usage = "Output type - {XML|TRIM|TEXT|DATA}", aliases = { "-t" })
-	private Type type;
+	private ResultType type;
 
 	/** The output file. */
 	@Option(name = "-output", usage = "Writes resultset to output file", aliases = { "-o" })
@@ -49,8 +49,8 @@ public class Loader {
 	 *
 	 * @return the type
 	 */
-	public Type getType() {
-		return type == null ? Type.XML : type;
+	public ResultType getType() {
+		return type == null ? ResultType.XML : type;
 	}
 
 	/**
@@ -65,7 +65,8 @@ public class Loader {
 	/**
 	 * Sets the output file.
 	 *
-	 * @param outputFile the new output file
+	 * @param outputFile
+	 *            the new output file
 	 */
 	public void setOutputFile(String outputFile) {
 		this.outputFile = outputFile;
@@ -87,7 +88,7 @@ public class Loader {
 	 * @param type
 	 *            the new type
 	 */
-	public void setType(Type type) {
+	public void setType(ResultType type) {
 		this.type = type;
 	}
 

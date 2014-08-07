@@ -389,7 +389,9 @@ public class ColumnNameFinder implements SelectItemVisitor, ExpressionVisitor {
 	@Override
 	public void visit(Function function) {
 		// TODO Auto-generated method stub
-
+		if (function.getName().equalsIgnoreCase("count")) {
+			columns.add(function.toString());
+		}
 	}
 
 	/*

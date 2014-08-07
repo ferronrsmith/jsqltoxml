@@ -15,7 +15,7 @@ import com.uwi.utils.Misc;
 public class DefaultSelectVisitor extends AbstractSelectVisitor {
 
 	/** The select. */
-	String select;
+	String xpath;
 
 	/** The where clause. */
 	String whereClause;
@@ -49,7 +49,7 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 	private String addNode(List<SelectItem> selectItems, String table) {
 		StringBuilder sb = new StringBuilder();
 		List<String> columns = new ColumnNameFinder()
-				.getTableNames(selectItems);
+		.getTableNames(selectItems);
 		for (int i = 0; i < columns.size(); i++) {
 			// String.format("//%s/%s", table, columns.get(i))
 			sb.append(formatOutput(table, columns.get(i), whereClause));
@@ -92,22 +92,13 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 	 *
 	 * @return the select
 	 */
-	public String getSelect() {
-		return select;
-	}
-
-	/**
-	 * Gets the where clause.
-	 *
-	 * @return the where clause
-	 */
-	public String getWhereClause() {
-		return whereClause;
+	public String getXPath() {
+		return xpath;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sf.jsqlparser.statement.select.SelectVisitor#visit(net.sf.jsqlparser
 	 * .statement.select.PlainSelect)
@@ -121,6 +112,6 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 	@Override
 	public void visit(PlainSelect plainSelect) {
 		whereClause = expressionVisitor.getWhereClause(plainSelect.getWhere());
-		select = addNode(plainSelect.getSelectItems(), tables.get(0));
+		xpath = addNode(plainSelect.getSelectItems(), tables.get(0));
 	}
 }
