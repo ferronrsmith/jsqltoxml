@@ -1,4 +1,4 @@
-package jsqltoxml;
+package com.uwi.ds;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -53,7 +53,6 @@ public class BinaryExpressionTreeTest {
 	public void setUp() {
 		expressionTree = new BinaryExpressionTree();
 	}
-
 }
 
 class TestExpression extends BinaryExpression {

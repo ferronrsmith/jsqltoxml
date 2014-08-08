@@ -85,39 +85,45 @@ public class KeyValue implements Serializable {
 	/**
 	 * Sets the key.
 	 *
-	 * @param key
-	 *            the new key
+	 * @param key            the new key
+	 * @return the key value
 	 */
-	public void setKey(String key) {
+	public KeyValue setKey(String key) {
 		this.key = key;
+		return this;
 	}
 
 	/**
 	 * Sets the meta data.
 	 *
-	 * @param metaData
-	 *            the new meta data
+	 * @param metaData            the new meta data
+	 * @return the key value
 	 */
-	public void setMetaData(Object metaData) {
+	public KeyValue setMetaData(Object metaData) {
 		this.metaData = metaData;
+		return this;
 	}
 
 	/**
 	 * Sets the value.
 	 *
-	 * @param value
-	 *            the new value
+	 * @param value            the new value
+	 * @return the key value
 	 */
-	public void setValue(String value) {
+	public KeyValue setValue(String value) {
 		this.value = value;
+		return this;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return String.format("{%s,%s}", key, value);
+		return String.format("{ key=%s,value=%s,metadata=%s }", key, value,
+				metaData);
 	}
 
 }

@@ -17,7 +17,7 @@ public class ExpressionPair {
 	/** The expression. */
 	BinaryExpression expression;
 
-	/** link identifier */
+	/**  link identifier. */
 	String _id;
 
 	/**
@@ -59,6 +59,11 @@ public class ExpressionPair {
 		return expression;
 	}
 
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public String getId() {
 		return _id;
 	}
@@ -82,6 +87,11 @@ public class ExpressionPair {
 		this.expression = expression;
 	}
 
+	/**
+	 * Sets the id.
+	 *
+	 * @param _id the new id
+	 */
 	public void setId(String _id) {
 		this._id = _id;
 	}

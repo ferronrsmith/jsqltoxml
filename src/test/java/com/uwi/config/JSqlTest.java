@@ -1,4 +1,4 @@
-package jsqltoxml;
+package com.uwi.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,9 +8,9 @@ import net.sf.jsqlparser.JSQLParserException;
 
 import org.jaxen.JaxenException;
 import org.jaxen.dom4j.Dom4jXPath;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import com.uwi.config.JSql;
 import com.uwi.utils.Misc;
 
 // TODO: Auto-generated Javadoc
@@ -19,16 +19,35 @@ import com.uwi.utils.Misc;
  */
 public class JSqlTest {
 
+	/**
+	 * Checks if is in valid xpath.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
 	public void isInValidXpath() throws Exception {
 		assertFalse(isValidXpath("//countries[contains(.,'people']]"));
 	}
 
+	/**
+	 * Checks if is valid xpath.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
 	public void isValidXpath() throws Exception {
 		assertTrue(isValidXpath("//countries[contains(.,'people')]"));
 	}
 
+	/**
+	 * Checks if is valid xpath.
+	 *
+	 * @param paths
+	 *            the paths
+	 * @return true, if is valid xpath
+	 */
 	private boolean isValidXpath(String... paths) {
 		boolean result = true;
 		for (String path : paths) {
@@ -37,12 +56,76 @@ public class JSqlTest {
 		return result;
 	}
 
+	/**
+	 * Checks if is valid xpath.
+	 *
+	 * @param xpath
+	 *            the xpath
+	 * @return true, if is valid xpath
+	 */
 	private boolean isValidXpath(String xpath) {
 		try {
 			return Misc.isNotBlank(new Dom4jXPath(xpath).toString());
 		} catch (JaxenException e) {
 			return false;
 		}
+	}
+
+	/**
+	 * Test attribute querying.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	@Ignore
+	public void testAttributeQuerying() throws Exception {
+		String xpath = JSql
+				.generateXpath("select * from country where (attr_name!='India' and attr_food!='roti')");
+		assertEquals(
+				"//country[( not(name/text()='India') and not(food/text()='roti') )]/.",
+				xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testCountAllColumns() throws Exception {
+		String xpath = JSql.generateXpath("select count(*) from country");
+		assertEquals("count(//country/*)", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testCountSelectedColumn() throws Exception {
+		String xpath = JSql.generateXpath("select count(name) from country");
+		assertEquals("count(//country/name)", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testCountThrowsExceptionWithMultipleColumns() throws Exception {
+		try {
+			JSql.generateXpath("select count(name, drink) from country");
+			fail("should not support multi-range count");
+		} catch (Exception e) {
+			// should not get here
+		}
+	}
+
+	@Test
+	public void testGreaterThanExpesssionExpression() throws Exception {
+		String xpath = JSql
+				.generateXpath("select title from book where price > 30.00");
+		assertEquals("//book[price>30.00]/title", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testGreaterThanOrEqualExpesssionExpression() throws Exception {
+		String xpath = JSql
+				.generateXpath("select title from book where price >= 30.00");
+		assertEquals("//book[price>=30.00]/title", xpath);
+		assertTrue(isValidXpath(xpath));
 	}
 
 	/**
@@ -59,6 +142,64 @@ public class JSqlTest {
 		} catch (JSQLParserException e) {
 			// should should be
 		}
+	}
+
+	@Test
+	public void testLessThanExpesssionExpression() throws Exception {
+		String xpath = JSql
+				.generateXpath("select title from book where price < 30.00");
+		assertEquals("//book[price<30.00]/title", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testLessThanOrEqualToExpesssionExpression() throws Exception {
+		String xpath = JSql
+				.generateXpath("select title from book where price <= 30.00");
+		assertEquals("//book[price<=30.00]/title", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	/**
+	 * Test like contains.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testLikeContains() throws Exception {
+		String xpath = JSql
+				.generateXpath("select * from country where food LIKE '%hot%'");
+		assertEquals("//country/food[contains (., 'hot')]/..", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	/**
+	 * Test like ends with.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testLikeEndsWith() throws Exception {
+		String xpath = JSql
+				.generateXpath("select * from country where food LIKE 'dog%'");
+		assertEquals("//country/food[ends-with (., 'dog')]/..", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	/**
+	 * Test like starts with.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testLikeStartsWith() throws Exception {
+		String xpath = JSql
+				.generateXpath("select * from country where food LIKE '%hot'");
+		assertEquals("//country/food[starts-with (., 'hot')]/..", xpath);
+		assertTrue(isValidXpath(xpath));
 	}
 
 	/**
@@ -213,7 +354,23 @@ public class JSqlTest {
 				.generateXpath("select * from country where (name='India' and food='roti') or food='barfi'");
 		assertEquals(
 				"//country[( name/text()='India' and food/text()='roti' ) or food/text()='barfi']/.",
-				JSql.generateXpath("select * from country where (name='India' and food='roti') or food='barfi'"));
+				xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	/**
+	 * Test where clause with and or.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testWhereClauseWithAndOROR() throws Exception {
+		String xpath = JSql
+				.generateXpath("select * from country where name='India' and food='roti' or food='barfi' or food='soup'");
+		assertEquals(
+				"//country[name/text()='India' and food/text()='roti' or food/text()='barfi' or food/text()='soup']/.",
+				xpath);
 		assertTrue(isValidXpath(xpath));
 	}
 
@@ -245,6 +402,22 @@ public class JSqlTest {
 				.generateXpath("select * from country where (name='India' and food='roti')");
 		assertEquals(
 				"//country[( name/text()='India' and food/text()='roti' )]/.",
+				xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	/**
+	 * Test where not equals.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testWhereNotEquals() throws Exception {
+		String xpath = JSql
+				.generateXpath("select * from country where (name!='India' and food!='roti')");
+		assertEquals(
+				"//country[( not(name/text()='India') and not(food/text()='roti') )]/.",
 				xpath);
 		assertTrue(isValidXpath(xpath));
 	}

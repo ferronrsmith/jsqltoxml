@@ -1,12 +1,14 @@
 package com.uwi.visitors;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectItem;
 
 import com.uwi.utils.ColumnNameFinder;
 import com.uwi.utils.Misc;
+import com.uwi.visitors.abst.AbstractSelectVisitor;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -48,8 +50,8 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 	 */
 	private String addNode(List<SelectItem> selectItems, String table) {
 		StringBuilder sb = new StringBuilder();
-		List<String> columns = new ColumnNameFinder()
-		.getTableNames(selectItems);
+		List<String> columns = new ColumnNameFinder(selectItems, table)
+				.getColumnNames();
 		for (int i = 0; i < columns.size(); i++) {
 			// String.format("//%s/%s", table, columns.get(i))
 			sb.append(formatOutput(table, columns.get(i), whereClause));
@@ -74,12 +76,17 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 	public String formatOutput(String tb, String col, String whereClause) {
 		String output = "";
 		if (Misc.isBlank(whereClause)) {
-			output = String.format("//%s/%s", tb, col);
+			if (Pattern.matches("count\\(//\\w+/\\(?[\\w|\\*]+\\)\\)?", col)) {
+				output = col;
+			} else {
+				output = String.format("//%s/%s", tb, col);
+			}
 		} else {
 			// food:contains(., 'psi')
 			String parts[] = whereClause.split(":");
 			if (parts.length == 2) {
-				output = String.format("//%s/%s[%s]", tb, parts[0], parts[1]);
+				output = String
+						.format("//%s/%s[%s]/..", tb, parts[0], parts[1]);
 			} else {
 				output = String.format("//%s[%s]/%s", tb, whereClause, col);
 			}
@@ -98,7 +105,7 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * net.sf.jsqlparser.statement.select.SelectVisitor#visit(net.sf.jsqlparser
 	 * .statement.select.PlainSelect)

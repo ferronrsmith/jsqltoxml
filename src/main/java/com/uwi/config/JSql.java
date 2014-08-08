@@ -13,8 +13,8 @@ import org.dom4j.Element;
 import com.uwi.enums.ResultType;
 import com.uwi.utils.Misc;
 import com.uwi.utils.QueryXML;
-import com.uwi.visitors.AbstractSelectVisitor;
 import com.uwi.visitors.DefaultSelectVisitor;
+import com.uwi.visitors.abst.AbstractSelectVisitor;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -29,9 +29,11 @@ public class JSql {
 	/**
 	 * Xpath string.
 	 *
-	 * @param sql            the sql
+	 * @param sql
+	 *            the sql
 	 * @return the string
-	 * @throws JSQLParserException the JSQL parser exception
+	 * @throws JSQLParserException
+	 *             the JSQL parser exception
 	 */
 	public static String generateXpath(String sql) throws JSQLParserException {
 		return visit(sql).getXPath();
@@ -124,7 +126,9 @@ public class JSql {
 			stmt.getSelectBody().accept(visitor);
 			return visitor;
 		} catch (Exception e) {
-			throw new JSQLParserException("Error parsing : " + sql);
+			e.printStackTrace();
+			// bubble back up exception
+			throw new JSQLParserException("Error parsing : " + sql, e);
 		}
 	}
 }

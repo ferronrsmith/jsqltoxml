@@ -1,4 +1,4 @@
-package com.uwi.visitors;
+package com.uwi.visitors.abst;
 
 import net.sf.jsqlparser.statement.select.SelectVisitor;
 import net.sf.jsqlparser.statement.select.SetOperationList;

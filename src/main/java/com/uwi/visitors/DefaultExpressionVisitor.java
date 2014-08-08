@@ -1,136 +1,46 @@
 package com.uwi.visitors;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-
-import net.sf.jsqlparser.expression.AllComparisonExpression;
-import net.sf.jsqlparser.expression.AnalyticExpression;
-import net.sf.jsqlparser.expression.AnyComparisonExpression;
 import net.sf.jsqlparser.expression.BinaryExpression;
-import net.sf.jsqlparser.expression.CaseExpression;
-import net.sf.jsqlparser.expression.CastExpression;
-import net.sf.jsqlparser.expression.DateValue;
-import net.sf.jsqlparser.expression.DoubleValue;
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.ExpressionVisitor;
-import net.sf.jsqlparser.expression.ExtractExpression;
-import net.sf.jsqlparser.expression.Function;
-import net.sf.jsqlparser.expression.IntervalExpression;
-import net.sf.jsqlparser.expression.JdbcNamedParameter;
-import net.sf.jsqlparser.expression.JdbcParameter;
-import net.sf.jsqlparser.expression.LongValue;
-import net.sf.jsqlparser.expression.NullValue;
-import net.sf.jsqlparser.expression.OracleHierarchicalExpression;
 import net.sf.jsqlparser.expression.Parenthesis;
-import net.sf.jsqlparser.expression.SignedExpression;
-import net.sf.jsqlparser.expression.StringValue;
-import net.sf.jsqlparser.expression.TimeValue;
-import net.sf.jsqlparser.expression.TimestampValue;
-import net.sf.jsqlparser.expression.WhenClause;
-import net.sf.jsqlparser.expression.operators.arithmetic.Addition;
-import net.sf.jsqlparser.expression.operators.arithmetic.BitwiseAnd;
-import net.sf.jsqlparser.expression.operators.arithmetic.BitwiseOr;
-import net.sf.jsqlparser.expression.operators.arithmetic.BitwiseXor;
-import net.sf.jsqlparser.expression.operators.arithmetic.Concat;
-import net.sf.jsqlparser.expression.operators.arithmetic.Division;
-import net.sf.jsqlparser.expression.operators.arithmetic.Modulo;
-import net.sf.jsqlparser.expression.operators.arithmetic.Multiplication;
-import net.sf.jsqlparser.expression.operators.arithmetic.Subtraction;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
-import net.sf.jsqlparser.expression.operators.relational.Between;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
-import net.sf.jsqlparser.expression.operators.relational.ExistsExpression;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThan;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
-import net.sf.jsqlparser.expression.operators.relational.InExpression;
-import net.sf.jsqlparser.expression.operators.relational.IsNullExpression;
 import net.sf.jsqlparser.expression.operators.relational.LikeExpression;
-import net.sf.jsqlparser.expression.operators.relational.Matches;
 import net.sf.jsqlparser.expression.operators.relational.MinorThan;
 import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
-import net.sf.jsqlparser.expression.operators.relational.RegExpMatchOperator;
-import net.sf.jsqlparser.schema.Column;
-import net.sf.jsqlparser.statement.select.SubSelect;
 
 import com.uwi.ds.BinaryExpressionTree;
+import com.uwi.ds.ExpressionHash;
 import com.uwi.enums.ExpressionType;
 import com.uwi.utils.KeyValue;
+import com.uwi.utils.LinkIdentifierGenerator;
+import com.uwi.visitors.abst.AbstractExpressionVisitor;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class DefaultExpressionVisitor.
  */
-public class DefaultExpressionVisitor implements ExpressionVisitor {
+public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
 	/** The has paren. */
 	private boolean hasParen = false;
 
 	/** The columns. */
-	List<KeyValue> columns; // handle duplicate columns
+	// List<KeyValue> columns; // handle duplicate columns
 
 	/** The columns. */
-	List<KeyValue> _temp; // utility hash for saving data for later
+	ExpressionHash _temp; // utility hash for saving data
+	// for later
+
+	/** The tree. */
+	ExpressionHash tree;
 
 	/** The expression tree. */
 	BinaryExpressionTree expressionTree;
-
-	private Collection<KeyValue> flatten(Collection<KeyValue> _temp2) {
-		List<KeyValue> result = new ArrayList<KeyValue>();
-		LinkedHashMap<String, List<KeyValue>> bucket = new LinkedHashMap<String, List<KeyValue>>();
-		Iterator<KeyValue> iter = _temp2.iterator();
-		while (iter.hasNext()) {
-			KeyValue kv = iter.next();
-			if (bucket.containsKey(kv.getMetaData())) {
-				bucket.get(kv.getMetaData()).add(kv);
-			} else {
-				List<KeyValue> kvs = new ArrayList<KeyValue>();
-				kvs.add(kv);
-				bucket.put(kv.getMetaData().toString(), kvs);
-			}
-		}
-		Iterator<Entry<String, List<KeyValue>>> bIter = bucket.entrySet()
-				.iterator();
-		while (bIter.hasNext()) {
-			StringBuilder sb = new StringBuilder();
-			Entry<String, List<KeyValue>> entrySet = bIter.next();
-			List<KeyValue> kList = entrySet.getValue();
-			for (int i = 0; i < kList.size(); i++) {
-				KeyValue keyValue = entrySet.getValue().get(i);
-				sb.append(keyValue.getValue());
-				if (i != kList.size() - 1) {
-					sb.append(" ");
-					sb.append(keyValue.getKey());
-					sb.append(" ");
-				}
-			}
-			result.add(new KeyValue(kList.get(0).getKey(), sb.toString(), kList
-					.get(0).getMetaData()));
-		}
-
-		// shift
-
-		if (result.size() > 1) {
-			for (int i = 0; i < result.size(); i++) {
-				KeyValue outer = result.get(i);
-				for (int j = 1; j < result.size(); j++) {
-					KeyValue inner = result.get(j);
-					if (!hasParen(inner.getValue())
-							| (hasParen(outer) && hasParen(inner))) {
-						outer.setKey(result.get(j).getKey());
-					}
-				}
-			}
-		}
-
-		return result;
-	}
 
 	/**
 	 * Gets the where clause.
@@ -147,24 +57,17 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 		init();
 		exp.accept(this);
 		// [{and,name/text()='India'}, {and,food/text()='roti'}]
-		return merge(columns);
-	}
-
-	private boolean hasParen(KeyValue kv) {
-		return hasParen(kv.getValue());
-	}
-
-	private boolean hasParen(String inc) {
-		return Pattern.matches("^\\(.*\\)$", inc);
+		return tree.merge();
 	}
 
 	/**
 	 * Inits the.
 	 */
 	private void init() {
-		columns = new ArrayList<KeyValue>();
-		_temp = new ArrayList<KeyValue>();
+		// columns = new ArrayList<KeyValue>();
+		_temp = new ExpressionHash();
 		expressionTree = new BinaryExpressionTree();
+		tree = new ExpressionHash();
 	}
 
 	/**
@@ -199,10 +102,29 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 * @param isNot
 	 *            the is not
 	 */
-	private void manageOperands(BinaryExpression exp, boolean isNot) {
-		String equalTo = String.format(isNot ? "not(%s/text()=%s)"
-				: "%s/text()=%s", exp.getLeftExpression(), exp
-				.getRightExpression());
+	private void manageOperands(BinaryExpression exp) {
+		String equalTo = null;
+		switch (exp.getStringExpression()) {
+		case "!=":
+			equalTo = String.format("not(%s/text()=%s)",
+					exp.getLeftExpression(), exp.getRightExpression());
+			break;
+		case "=":
+			equalTo = String.format("%s/text()=%s", exp.getLeftExpression(),
+					exp.getRightExpression());
+			break;
+		case ">":
+		case "<":
+		case ">=":
+		case "<=":
+			equalTo = String.format("%s%s%s", exp.getLeftExpression(),
+					exp.getStringExpression(), exp.getRightExpression());
+			break;
+		default:
+			throw new IllegalArgumentException(
+					"Cannot parse string expression : "
+							+ exp.getStringExpression());
+		}
 
 		// check if currentType is null
 		KeyValue keyValue = new KeyValue(
@@ -212,34 +134,8 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 		if (hasParen) {
 			_temp.add(keyValue);
 		} else {
-			columns.add(keyValue);
+			tree.add(keyValue);
 		}
-	}
-
-	/**
-	 * Merge.
-	 *
-	 * @param _temp
-	 *            the _temp
-	 * @return the string
-	 */
-	public String merge(Collection<KeyValue> _temp) {
-		_temp = flatten(_temp);
-		int size = _temp.size();
-		int count = 0;
-		StringBuilder sb = new StringBuilder();
-		Iterator<KeyValue> iter = _temp.iterator();
-		while (iter.hasNext()) {
-			KeyValue kv = iter.next();
-			sb.append(kv.getValue());
-			if (count != size - 1) {
-				sb.append(" ");
-				sb.append(kv.getKey());
-				sb.append(" ");
-			}
-			count++;
-		}
-		return sb.toString();
 	}
 
 	/**
@@ -248,45 +144,8 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	public void mergeParenRecords() {
 		// select * from country where food='roti' and (food='roti' or
 		// food='hotdog')
-		columns.add(new KeyValue(_temp.get(0).getKey(), String.format("( %s )",
-				merge(_temp)), _temp.get(0).getMetaData()));
-		_temp = new ArrayList<KeyValue>();
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param addition
-	 *            the addition
-	 */
-	@Override
-	public void visit(Addition addition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param allComparisonExpression
-	 *            the all comparison expression
-	 */
-	@Override
-	public void visit(AllComparisonExpression allComparisonExpression) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param aexpr
-	 *            the aexpr
-	 */
-	@Override
-	public void visit(AnalyticExpression aexpr) {
-		// TODO Auto-generated method stub
-
+		tree.add(_temp.cherryPick(new KeyValue().setValue(_temp.mergeParen())));
+		_temp.clear();
 	}
 
 	/**
@@ -303,192 +162,12 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	/**
 	 * Visit.
 	 *
-	 * @param anyComparisonExpression
-	 *            the any comparison expression
-	 */
-	@Override
-	public void visit(AnyComparisonExpression anyComparisonExpression) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param between
-	 *            the between
-	 */
-	@Override
-	public void visit(Between between) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param bitwiseAnd
-	 *            the bitwise and
-	 */
-	@Override
-	public void visit(BitwiseAnd bitwiseAnd) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param bitwiseOr
-	 *            the bitwise or
-	 */
-	@Override
-	public void visit(BitwiseOr bitwiseOr) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param bitwiseXor
-	 *            the bitwise xor
-	 */
-	@Override
-	public void visit(BitwiseXor bitwiseXor) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param caseExpression
-	 *            the case expression
-	 */
-	@Override
-	public void visit(CaseExpression caseExpression) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param cast
-	 *            the cast
-	 */
-	@Override
-	public void visit(CastExpression cast) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param tableColumn
-	 *            the table column
-	 */
-	@Override
-	public void visit(Column tableColumn) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param concat
-	 *            the concat
-	 */
-	@Override
-	public void visit(Concat concat) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param dateValue
-	 *            the date value
-	 */
-	@Override
-	public void visit(DateValue dateValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param division
-	 *            the division
-	 */
-	@Override
-	public void visit(Division division) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param doubleValue
-	 *            the double value
-	 */
-	@Override
-	public void visit(DoubleValue doubleValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
 	 * @param equalsTo
 	 *            the equals to
 	 */
 	@Override
 	public void visit(EqualsTo equalsTo) {
-		manageOperands(equalsTo, false);
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param existsExpression
-	 *            the exists expression
-	 */
-	@Override
-	public void visit(ExistsExpression existsExpression) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param eexpr
-	 *            the eexpr
-	 */
-	@Override
-	public void visit(ExtractExpression eexpr) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param function
-	 *            the function
-	 */
-	@Override
-	public void visit(Function function) {
-		// TODO Auto-generated method stub
-
+		manageOperands(equalsTo);
 	}
 
 	/**
@@ -499,8 +178,7 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 */
 	@Override
 	public void visit(GreaterThan greaterThan) {
-		// TODO Auto-generated method stub
-
+		manageOperands(greaterThan);
 	}
 
 	/**
@@ -511,68 +189,7 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 */
 	@Override
 	public void visit(GreaterThanEquals greaterThanEquals) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param inExpression
-	 *            the in expression
-	 */
-	@Override
-	public void visit(InExpression inExpression) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param iexpr
-	 *            the iexpr
-	 */
-	@Override
-	public void visit(IntervalExpression iexpr) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param isNullExpression
-	 *            the is null expression
-	 */
-	@Override
-	public void visit(IsNullExpression isNullExpression) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param jdbcNamedParameter
-	 *            the jdbc named parameter
-	 */
-	@Override
-	public void visit(JdbcNamedParameter jdbcNamedParameter) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param jdbcParameter
-	 *            the jdbc parameter
-	 */
-	@Override
-	public void visit(JdbcParameter jdbcParameter) {
-		// TODO Auto-generated method stub
-
+		manageOperands(greaterThanEquals);
 	}
 
 	/**
@@ -584,32 +201,9 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	@Override
 	public void visit(LikeExpression likeExpression) {
 		// TODO Auto-generated method stub
-		columns.add(new KeyValue(ExpressionType.LIKE.getValue(),
-				likeOperand(likeExpression)));
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param longValue
-	 *            the long value
-	 */
-	@Override
-	public void visit(LongValue longValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param matches
-	 *            the matches
-	 */
-	@Override
-	public void visit(Matches matches) {
-		// TODO Auto-generated method stub
-
+		tree.add(new KeyValue(ExpressionType.LIKE.getValue(),
+				likeOperand(likeExpression), new LinkIdentifierGenerator()
+						.nextSessionId()));
 	}
 
 	/**
@@ -620,8 +214,7 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 */
 	@Override
 	public void visit(MinorThan minorThan) {
-		// TODO Auto-generated method stub
-
+		manageOperands(minorThan);
 	}
 
 	/**
@@ -632,32 +225,7 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 */
 	@Override
 	public void visit(MinorThanEquals minorThanEquals) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param modulo
-	 *            the modulo
-	 */
-	@Override
-	public void visit(Modulo modulo) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param multiplication
-	 *            the multiplication
-	 */
-	@Override
-	public void visit(Multiplication multiplication) {
-		// TODO Auto-generated method stub
-
+		manageOperands(minorThanEquals);
 	}
 
 	/**
@@ -668,31 +236,7 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	 */
 	@Override
 	public void visit(NotEqualsTo notEqualsTo) {
-		manageOperands(notEqualsTo, true);
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param nullValue
-	 *            the null value
-	 */
-	@Override
-	public void visit(NullValue nullValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param oexpr
-	 *            the oexpr
-	 */
-	@Override
-	public void visit(OracleHierarchicalExpression oexpr) {
-		// TODO Auto-generated method stub
-
+		manageOperands(notEqualsTo);
 	}
 
 	/**
@@ -721,102 +265,6 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 	}
 
 	/**
-	 * Visit.
-	 *
-	 * @param rexpr
-	 *            the rexpr
-	 */
-	@Override
-	public void visit(RegExpMatchOperator rexpr) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param signedExpression
-	 *            the signed expression
-	 */
-	@Override
-	public void visit(SignedExpression signedExpression) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param stringValue
-	 *            the string value
-	 */
-	@Override
-	public void visit(StringValue stringValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param subSelect
-	 *            the sub select
-	 */
-	@Override
-	public void visit(SubSelect subSelect) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param subtraction
-	 *            the subtraction
-	 */
-	@Override
-	public void visit(Subtraction subtraction) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param timestampValue
-	 *            the timestamp value
-	 */
-	@Override
-	public void visit(TimestampValue timestampValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param timeValue
-	 *            the time value
-	 */
-	@Override
-	public void visit(TimeValue timeValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * Visit.
-	 *
-	 * @param whenClause
-	 *            the when clause
-	 */
-	@Override
-	public void visit(WhenClause whenClause) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
 	 * Visit binary expression.
 	 *
 	 * @param binaryExpression
@@ -828,4 +276,5 @@ public class DefaultExpressionVisitor implements ExpressionVisitor {
 		binaryExpression.getRightExpression().accept(this);
 		expressionTree.remove();
 	}
+
 }

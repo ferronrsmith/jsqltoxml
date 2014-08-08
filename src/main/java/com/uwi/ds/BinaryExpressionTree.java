@@ -63,10 +63,20 @@ public class BinaryExpressionTree {
 		return insertFailedList;
 	}
 
+	/**
+	 * Peek.
+	 *
+	 * @return the expression pair
+	 */
 	public ExpressionPair peek() {
 		return expressions.peekLast();
 	}
 
+	/**
+	 * Peek at expression.
+	 *
+	 * @return the binary expression
+	 */
 	public BinaryExpression peekAtExpression() {
 		ExpressionPair pair;
 		if ((pair = peek()) == null) {
@@ -75,6 +85,11 @@ public class BinaryExpressionTree {
 		return pair.getExpression();
 	}
 
+	/**
+	 * Peek at id.
+	 *
+	 * @return the string
+	 */
 	public String peekAtId() {
 		ExpressionPair pair;
 		if ((pair = peek()) == null) {
@@ -83,6 +98,11 @@ public class BinaryExpressionTree {
 		return pair.getId();
 	}
 
+	/**
+	 * Peek at type.
+	 *
+	 * @return the expression type
+	 */
 	public ExpressionType peekAtType() {
 		ExpressionPair pair;
 		if ((pair = peek()) == null) {
