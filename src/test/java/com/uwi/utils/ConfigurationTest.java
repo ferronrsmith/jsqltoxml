@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.uwi.enums.ResultType;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class ConfigurationTest.
@@ -13,7 +15,8 @@ public class ConfigurationTest {
 	/**
 	 * Test load configuration file.
 	 *
-	 * @throws Exception the exception
+	 * @throws Exception
+	 *             the exception
 	 */
 	@Test
 	public void testLoadConfigurationFile() throws Exception {
@@ -25,6 +28,6 @@ public class ConfigurationTest {
 				"Only 1 parameter is supported at this time. e.g. count(*)|count(name) not count(x,y,.)",
 				conf.i18n("count_single_param"));
 		assertEquals("en", Configuration.DEFAULT_LANG);
-		assertEquals("xml", Configuration.DEFAULT_TYPE);
+		assertEquals(ResultType.XML, Configuration.DEFAULT_TYPE);
 	}
 }
