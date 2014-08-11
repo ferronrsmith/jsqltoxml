@@ -28,6 +28,12 @@ public class EngineParamTest {
 	}
 
 	@Test
+	public void testInvalidXML() throws Exception {
+		test(new String[] { "-x", "xml/countries.xml", "-s", "select * from" },
+				"Error parsing : select * from\nInvalid SQL Statement ..");
+	}
+
+	@Test
 	public void testNoSql() throws Exception {
 		test(new String[] { "-x", "xml/countries.xml" },
 				"Option \"-sql (-s)\" is required");

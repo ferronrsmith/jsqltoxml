@@ -120,12 +120,12 @@ public class KeyValue extends Configuration implements Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return String.format(i18n("kv_format"), key, value, metaData);
+		return i18n("kv_format", key, value, metaData);
 	}
 
 }

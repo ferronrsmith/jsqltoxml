@@ -46,6 +46,7 @@ public class Engine {
 		} catch (JSQLParserException e) {
 			System.err.println(e.getMessage());
 			System.err.println("Invalid SQL Statement ..");
+			System.exit(-2);
 		}
 	}
 }
