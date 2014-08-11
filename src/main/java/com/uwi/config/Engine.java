@@ -37,7 +37,7 @@ public class Engine {
 			parser.printUsage(System.err);
 			System.err.println();
 
-			return;
+			System.exit(-1);
 		}
 
 		try {

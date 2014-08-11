@@ -3,9 +3,11 @@ package com.uwi.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.jaxen.JaxenException;
@@ -21,7 +23,24 @@ import com.uwi.enums.ResultType;
  * @param <E>
  *            the element type
  */
-public class QueryXML<E> {
+public class QueryXML<E> extends Configuration {
+
+	private List<Element> checkForCount(String xpath, List<Element> results) {
+		if (Pattern.matches(i18n("count_regex"), xpath)
+				|| Pattern.matches(i18n("countr_attr_regex"), xpath)) {
+			Element element = DocumentHelper.createElement("resultCount");
+			if (results.size() > 0) {
+				element.setText(String.valueOf(results.get(0)));
+			} else {
+				element.setText("0");
+			}
+			results = new ArrayList<Element>();
+			results.add(element);
+		} else {
+			System.out.println(i18n("no_count"));
+		}
+		return results;
+	}
 
 	/**
 	 * Gets the text from an {@link Element} passing in a custom trim function.
@@ -81,6 +100,8 @@ public class QueryXML<E> {
 			path = new Dom4jXPath(xpath);
 			results = path.selectNodes(dom4jDocument);
 
+			results = checkForCount(xpath, results);
+
 			for (Element element : results) {
 				E res;
 				switch (type) {
@@ -109,5 +130,4 @@ public class QueryXML<E> {
 		}
 		return result;
 	}
-
 }

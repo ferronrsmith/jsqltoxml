@@ -1,5 +1,7 @@
 package com.uwi.visitors;
 
+import java.util.regex.Pattern;
+
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Parenthesis;
@@ -70,6 +72,11 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 		tree = new ExpressionHash();
 	}
 
+	private boolean isAttr(BinaryExpression exp) {
+		return Pattern.matches(i18n("attr_regex"), exp.getLeftExpression()
+				.toString());
+	}
+
 	/**
 	 * Like operand.
 	 *
@@ -85,13 +92,13 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 		char lst = right.charAt(right.length() - 1);
 		right = right.replaceAll("%", "");
 		if (fst == '%' && lst == '%') {
-			result = String.format("contains (., '%s')", right);
+			result = i18n("contains_exp", right);
 		} else if (fst == '%' && lst != '%') {
-			result = String.format("starts-with (., '%s')", right);
+			result = i18n("startswith_exp", right);
 		} else if (fst != '%' && lst == '%') {
-			result = String.format("ends-with (., '%s')", right);
+			result = i18n("endswith_exp", right);
 		}
-		return String.format("%s:%s", left, result);
+		return i18n("like_part_exp", left, result);
 	}
 
 	/**
@@ -99,31 +106,32 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 	 *
 	 * @param exp
 	 *            the exp
-	 * @param isNot
-	 *            the is not
 	 */
 	private void manageOperands(BinaryExpression exp) {
 		String equalTo = null;
-		switch (exp.getStringExpression()) {
-		case "!=":
-			equalTo = String.format("not(%s/text()=%s)",
-					exp.getLeftExpression(), exp.getRightExpression());
-			break;
-		case "=":
-			equalTo = String.format("%s/text()=%s", exp.getLeftExpression(),
-					exp.getRightExpression());
-			break;
-		case ">":
-		case "<":
-		case ">=":
-		case "<=":
-			equalTo = String.format("%s%s%s", exp.getLeftExpression(),
-					exp.getStringExpression(), exp.getRightExpression());
-			break;
-		default:
-			throw new IllegalArgumentException(
-					"Cannot parse string expression : "
-							+ exp.getStringExpression());
+		if (isAttr(exp)) {
+			equalTo = processsAttr(exp);
+		} else {
+			switch (exp.getStringExpression()) {
+			case "!=":
+				equalTo = i18n("not_exp", exp.getLeftExpression(),
+						exp.getRightExpression());
+				break;
+			case "=":
+				equalTo = i18n("equal_exp", exp.getLeftExpression(),
+						exp.getRightExpression());
+				break;
+			case ">":
+			case "<":
+			case ">=":
+			case "<=":
+				equalTo = i18n("alt_exp", exp.getLeftExpression(),
+						exp.getStringExpression(), exp.getRightExpression());
+				break;
+			default:
+				throw new IllegalArgumentException(i18n("operand_parse",
+						exp.getStringExpression()));
+			}
 		}
 
 		// check if currentType is null
@@ -146,6 +154,14 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 		// food='hotdog')
 		tree.add(_temp.cherryPick(new KeyValue().setValue(_temp.mergeParen())));
 		_temp.clear();
+	}
+
+	private String processsAttr(BinaryExpression expression) {
+		String[] str = expression.getLeftExpression().toString().split("_");
+		String exp = expression.getStringExpression();
+		String equalTo = i18n("attribute_exp", str[1], exp,
+				expression.getRightExpression());
+		return equalTo;
 	}
 
 	/**
@@ -203,7 +219,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 		// TODO Auto-generated method stub
 		tree.add(new KeyValue(ExpressionType.LIKE.getValue(),
 				likeOperand(likeExpression), new LinkIdentifierGenerator()
-						.nextSessionId()));
+		.nextSessionId()));
 	}
 
 	/**

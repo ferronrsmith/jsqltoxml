@@ -76,20 +76,26 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 	public String formatOutput(String tb, String col, String whereClause) {
 		String output = "";
 		if (Misc.isBlank(whereClause)) {
-			if (Pattern.matches("count\\(//\\w+/\\(?[\\w|\\*]+\\)\\)?", col)) {
+			if (Pattern.matches(i18n("count_regex"), col)) {
 				output = col;
 			} else {
-				output = String.format("//%s/%s", tb, col);
+				output = i18n("select_exp", tb, col);
 			}
 		} else {
 			// food:contains(., 'psi')
-			String parts[] = whereClause.split(":");
-			if (parts.length == 2) {
-				output = String
-						.format("//%s/%s[%s]/..", tb, parts[0], parts[1]);
+
+			if (Pattern.matches(i18n("count_regex"), col)) {
+				// count expression with where clause
+				output = i18n("count_exp", tb, whereClause);
 			} else {
-				output = String.format("//%s[%s]/%s", tb, whereClause, col);
+				String parts[] = whereClause.split(":");
+				if (parts.length == 2) {
+					output = i18n("like_exp", tb, parts[0], parts[1]);
+				} else {
+					output = i18n("where_exp", tb, whereClause, col);
+				}
 			}
+
 		}
 		return output;
 	}

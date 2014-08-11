@@ -30,10 +30,20 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 	/** The output. */
 	List<String> output;
 
+	/** The select items. */
 	List<SelectItem> selectItems;
 
+	/** The current tb. */
 	String currentTb;
 
+	/**
+	 * Instantiates a new column name finder.
+	 *
+	 * @param selectItems
+	 *            the select items
+	 * @param table
+	 *            the table
+	 */
 	public ColumnNameFinder(List<SelectItem> selectItems, String table) {
 		this.selectItems = selectItems;
 		this.currentTb = table;
@@ -49,8 +59,6 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 	/**
 	 * Gets the table names.
 	 *
-	 * @param items
-	 *            the items
 	 * @return the table names
 	 */
 	public List<String> getColumnNames() {
@@ -72,7 +80,7 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sf.jsqlparser.statement.select.SelectItemVisitor#visit(net.sf.jsqlparser
 	 * .statement.select.AllColumns)
@@ -84,7 +92,7 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sf.jsqlparser.statement.select.SelectItemVisitor#visit(net.sf.jsqlparser
 	 * .statement.select.AllTableColumns)
@@ -96,7 +104,7 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sf.jsqlparser.expression.ExpressionVisitor#visit(net.sf.jsqlparser
 	 * .schema.Column)
@@ -108,7 +116,7 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sf.jsqlparser.expression.ExpressionVisitor#visit(net.sf.jsqlparser
 	 * .expression.Function)
@@ -119,10 +127,9 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 		if (function.getName().equalsIgnoreCase("count")) {
 			ExpressionList expLs = function.getParameters();
 			if (expLs != null && expLs.getExpressions().size() > 1) {
-				throw new IllegalArgumentException(
-						"Only 1 parameter is supported at this time. e.g. count(*)|count(name) not count(x,y,.)");
+				throw new IllegalArgumentException(i18n("count_single_param"));
 			} else {
-				columns.add(String.format("count(//%s/%s)", currentTb,
+				columns.add(i18n("count_regex_param", currentTb,
 						expLs == null ? "*" : expLs.getExpressions().get(0)
 								.toString()));
 			}
@@ -131,7 +138,7 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sf.jsqlparser.statement.select.SelectItemVisitor#visit(net.sf.jsqlparser
 	 * .statement.select.SelectExpressionItem)

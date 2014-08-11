@@ -3,13 +3,14 @@ package com.uwi.ds;
 import net.sf.jsqlparser.expression.BinaryExpression;
 
 import com.uwi.enums.ExpressionType;
+import com.uwi.utils.Configuration;
 import com.uwi.utils.LinkIdentifierGenerator;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ExpressionPair.
  */
-public class ExpressionPair {
+public class ExpressionPair extends Configuration {
 
 	/** The type. */
 	ExpressionType type;
@@ -17,7 +18,7 @@ public class ExpressionPair {
 	/** The expression. */
 	BinaryExpression expression;
 
-	/**  link identifier. */
+	/** link identifier. */
 	String _id;
 
 	/**
@@ -29,10 +30,8 @@ public class ExpressionPair {
 	public ExpressionPair(BinaryExpression exp) {
 		this(ExpressionType.parse(exp), exp);
 		if (this.type == null) {
-			throw new IllegalArgumentException(
-					String.format(
-							"This type : [%s] as not yet been implement in [ExpressionType Enum]",
-							exp.getClass().getSimpleName()));
+			throw new IllegalArgumentException(String.format(
+					i18n("missing_exp_pair"), exp.getClass().getSimpleName()));
 		}
 	}
 
@@ -90,7 +89,8 @@ public class ExpressionPair {
 	/**
 	 * Sets the id.
 	 *
-	 * @param _id the new id
+	 * @param _id
+	 *            the new id
 	 */
 	public void setId(String _id) {
 		this._id = _id;
@@ -105,5 +105,4 @@ public class ExpressionPair {
 	public void setType(ExpressionType type) {
 		this.type = type;
 	}
-
 }

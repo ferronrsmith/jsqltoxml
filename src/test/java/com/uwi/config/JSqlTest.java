@@ -8,7 +8,6 @@ import net.sf.jsqlparser.JSQLParserException;
 
 import org.jaxen.JaxenException;
 import org.jaxen.dom4j.Dom4jXPath;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.uwi.utils.Misc;
@@ -78,16 +77,73 @@ public class JSqlTest {
 	 *             the exception
 	 */
 	@Test
-	@Ignore
 	public void testAttributeQuerying() throws Exception {
 		String xpath = JSql
-				.generateXpath("select * from country where (attr_name!='India' and attr_food!='roti')");
+				.generateXpath("select * from country where attr_name='India'");
+		assertEquals("//country[@name='India']/.", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testAttributeQueryingWithCount() throws Exception {
+		String xpath = JSql
+				.generateXpath("select count(*) from book where attr_category = 'COOKING'");
+		assertEquals("count(//book[@category='COOKING'])", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	/**
+	 * Test attribute querying.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testAttributeQueryingWithOr() throws Exception {
+		String xpath = JSql
+				.generateXpath("select * from country where attr_name='India' or attr_food = 'rice'");
+		assertEquals("//country[@name='India' or @food='rice']/.", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	/**
+	 * Test attribute querying.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testAttributeQueryingWithOrAnd() throws Exception {
+		String xpath = JSql
+				.generateXpath("select * from country where attr_name='India' or (attr_food = 'rice' and attr_food='pizza')");
 		assertEquals(
-				"//country[( not(name/text()='India') and not(food/text()='roti') )]/.",
+				"//country[@name='India' or ( @food='rice' and @food='pizza' )]/.",
 				xpath);
 		assertTrue(isValidXpath(xpath));
 	}
 
+	/**
+	 * Test attribute querying.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
+	public void testAttributeQueryingWithOrOr() throws Exception {
+		String xpath = JSql
+				.generateXpath("select * from country where attr_name='India' or (attr_food = 'rice' or attr_food='pizza')");
+		assertEquals(
+				"//country[@name='India' or ( @food='rice' or @food='pizza' )]/.",
+				xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	/**
+	 * Test count all columns.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
 	public void testCountAllColumns() throws Exception {
 		String xpath = JSql.generateXpath("select count(*) from country");
@@ -96,12 +152,34 @@ public class JSqlTest {
 	}
 
 	@Test
+	public void testCountOperationWithWhereClause() throws Exception {
+		String xpath = JSql
+				.generateXpath("select count(*) from country where (name='India' and food='roti')");
+		assertEquals(
+				"count(//country[( name/text()='India' and food/text()='roti' )])",
+				xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	/**
+	 * Test count selected column.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
+	@Test
 	public void testCountSelectedColumn() throws Exception {
 		String xpath = JSql.generateXpath("select count(name) from country");
 		assertEquals("count(//country/name)", xpath);
 		assertTrue(isValidXpath(xpath));
 	}
 
+	/**
+	 * Test count throws exception with multiple columns.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
 	public void testCountThrowsExceptionWithMultipleColumns() throws Exception {
 		try {
@@ -112,16 +190,28 @@ public class JSqlTest {
 		}
 	}
 
+	/**
+	 * Test greater than expression expression.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
-	public void testGreaterThanExpesssionExpression() throws Exception {
+	public void testGreaterThanExpressionExpression() throws Exception {
 		String xpath = JSql
 				.generateXpath("select title from book where price > 30.00");
 		assertEquals("//book[price>30.00]/title", xpath);
 		assertTrue(isValidXpath(xpath));
 	}
 
+	/**
+	 * Test greater than or equal expression expression.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
-	public void testGreaterThanOrEqualExpesssionExpression() throws Exception {
+	public void testGreaterThanOrEqualExpressionExpression() throws Exception {
 		String xpath = JSql
 				.generateXpath("select title from book where price >= 30.00");
 		assertEquals("//book[price>=30.00]/title", xpath);
@@ -144,16 +234,28 @@ public class JSqlTest {
 		}
 	}
 
+	/**
+	 * Test less than expression expression.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
-	public void testLessThanExpesssionExpression() throws Exception {
+	public void testLessThanExpressionExpression() throws Exception {
 		String xpath = JSql
 				.generateXpath("select title from book where price < 30.00");
 		assertEquals("//book[price<30.00]/title", xpath);
 		assertTrue(isValidXpath(xpath));
 	}
 
+	/**
+	 * Test less than or equal to expression expression.
+	 *
+	 * @throws Exception
+	 *             the exception
+	 */
 	@Test
-	public void testLessThanOrEqualToExpesssionExpression() throws Exception {
+	public void testLessThanOrEqualToExpressionExpression() throws Exception {
 		String xpath = JSql
 				.generateXpath("select title from book where price <= 30.00");
 		assertEquals("//book[price<=30.00]/title", xpath);

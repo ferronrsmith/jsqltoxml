@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * The Class KeyValue.
  */
-public class KeyValue implements Serializable {
+public class KeyValue extends Configuration implements Serializable {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 362680946538856026L;
@@ -85,7 +85,8 @@ public class KeyValue implements Serializable {
 	/**
 	 * Sets the key.
 	 *
-	 * @param key            the new key
+	 * @param key
+	 *            the new key
 	 * @return the key value
 	 */
 	public KeyValue setKey(String key) {
@@ -96,7 +97,8 @@ public class KeyValue implements Serializable {
 	/**
 	 * Sets the meta data.
 	 *
-	 * @param metaData            the new meta data
+	 * @param metaData
+	 *            the new meta data
 	 * @return the key value
 	 */
 	public KeyValue setMetaData(Object metaData) {
@@ -107,7 +109,8 @@ public class KeyValue implements Serializable {
 	/**
 	 * Sets the value.
 	 *
-	 * @param value            the new value
+	 * @param value
+	 *            the new value
 	 * @return the key value
 	 */
 	public KeyValue setValue(String value) {
@@ -122,8 +125,7 @@ public class KeyValue implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return String.format("{ key=%s,value=%s,metadata=%s }", key, value,
-				metaData);
+		return String.format(i18n("kv_format"), key, value, metaData);
 	}
 
 }

@@ -1,8 +1,11 @@
 package com.uwi.utils;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.dom4j.DocumentHelper;
@@ -13,7 +16,7 @@ import org.dom4j.io.XMLWriter;
 /**
  * The Class Misc.
  */
-public class Misc {
+public class Misc extends Configuration {
 
 	/**
 	 * <p>
@@ -72,7 +75,8 @@ public class Misc {
 	/**
 	 * Pretty print.
 	 *
-	 * @param xml the xml
+	 * @param xml
+	 *            the xml
 	 * @return the string
 	 */
 	public static String prettyPrint(final String xml) {
@@ -95,7 +99,12 @@ public class Misc {
 		} catch (Exception e) {
 			throw new RuntimeException("Error pretty printing xml:\n" + xml, e);
 		}
-		return sw.toString();
+		return sw.toString().trim();
+	}
+
+	public static String readFilesToString(String path) throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, Charset.forName("UTF-8"));
 	}
 
 	/**
@@ -107,22 +116,15 @@ public class Misc {
 	 *            the data
 	 */
 	public static void saveToFile(String outFile, List<String> data) {
-
 		// terminate if outFile is null or empty
 		if (Misc.isBlank(outFile)) {
 			return;
 		}
-
 		try {
-			FileWriter fw = new FileWriter(outFile);
-			for (String row : data) {
-				fw.write(row);
-			}
-			fw.close();
+			Files.write(Paths.get(outFile), data, StandardCharsets.UTF_8);
 		} catch (IOException e) {
-			System.err.println("Error: Cannot save data to file : " + outFile);
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-
 		}
 	}
 }

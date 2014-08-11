@@ -76,6 +76,10 @@ public class JSql {
 	public static void parse(String xmlfile, String sql, ResultType type,
 			String outputFile) throws JSQLParserException {
 		List<String> result = parseXML(xmlfile, sql, type, outputFile);
+		if (result == null || result.size() == 0) {
+			System.out.println("no result(s) found");
+			return;
+		}
 		for (int i = 0; i < result.size(); i++) {
 			System.out.println(result.get(i));
 		}

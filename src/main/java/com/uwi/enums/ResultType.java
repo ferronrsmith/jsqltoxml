@@ -21,5 +21,36 @@ public enum ResultType {
 	/** The trim. */
 	TRIM,
 	/** The element. */
-	ELEMENT
+	ELEMENT;
+
+	/**
+	 * Parses the.
+	 *
+	 * @param property the property
+	 * @return the result type
+	 */
+	public static ResultType parse(String property) {
+		for (ResultType type : values()) {
+			if (type.toString().equalsIgnoreCase(property)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Parses the.
+	 *
+	 * @param property the property
+	 * @param defaultType the default type
+	 * @return the result type
+	 */
+	public static ResultType parse(String property, ResultType defaultType) {
+		ResultType type = parse(property);
+		if (type == null) {
+			return defaultType;
+		} else {
+			return type;
+		}
+	}
 }

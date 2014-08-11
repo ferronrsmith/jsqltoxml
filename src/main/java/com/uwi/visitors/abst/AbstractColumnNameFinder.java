@@ -48,8 +48,14 @@ import net.sf.jsqlparser.expression.operators.relational.RegExpMatchOperator;
 import net.sf.jsqlparser.statement.select.SelectItemVisitor;
 import net.sf.jsqlparser.statement.select.SubSelect;
 
-public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
-		ExpressionVisitor {
+import com.uwi.utils.Configuration;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AbstractColumnNameFinder.
+ */
+public abstract class AbstractColumnNameFinder extends Configuration implements
+SelectItemVisitor, ExpressionVisitor {
 
 	/*
 	 * (non-Javadoc)
@@ -60,7 +66,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(Addition addition) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -73,7 +79,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(AllComparisonExpression allComparisonExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -86,7 +92,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(AnalyticExpression aexpr) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -99,7 +105,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(AndExpression andExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -112,7 +118,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(AnyComparisonExpression anyComparisonExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -125,7 +131,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(Between between) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -138,7 +144,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(BitwiseAnd bitwiseAnd) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -151,7 +157,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(BitwiseOr bitwiseOr) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -164,7 +170,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(BitwiseXor bitwiseXor) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -177,7 +183,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(CaseExpression caseExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -190,7 +196,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(CastExpression cast) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -203,7 +209,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(Concat concat) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -216,7 +222,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(DateValue dateValue) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -229,7 +235,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(Division division) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -242,7 +248,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(DoubleValue doubleValue) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -255,7 +261,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(EqualsTo equalsTo) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -268,7 +274,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(ExistsExpression existsExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -281,7 +287,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(ExtractExpression eexpr) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -294,7 +300,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(GreaterThan greaterThan) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -307,7 +313,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(GreaterThanEquals greaterThanEquals) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -320,7 +326,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(InExpression inExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -333,7 +339,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(IntervalExpression iexpr) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -346,7 +352,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(IsNullExpression isNullExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -359,7 +365,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(JdbcNamedParameter jdbcNamedParameter) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -372,7 +378,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(JdbcParameter jdbcParameter) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -385,7 +391,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(LikeExpression likeExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -398,7 +404,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(LongValue longValue) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -411,7 +417,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(Matches matches) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -424,7 +430,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(MinorThan minorThan) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -437,7 +443,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(MinorThanEquals minorThanEquals) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -450,7 +456,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(Modulo modulo) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -463,7 +469,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(Multiplication multiplication) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -476,7 +482,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(NotEqualsTo notEqualsTo) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -489,7 +495,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(NullValue nullValue) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -502,7 +508,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(OracleHierarchicalExpression oexpr) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -515,7 +521,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(OrExpression orExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -528,7 +534,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(Parenthesis parenthesis) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -541,7 +547,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(RegExpMatchOperator rexpr) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -554,7 +560,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(SignedExpression signedExpression) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -567,7 +573,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(StringValue stringValue) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -580,7 +586,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(SubSelect subSelect) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -593,7 +599,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(Subtraction subtraction) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -606,7 +612,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(TimestampValue timestampValue) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -619,7 +625,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(TimeValue timeValue) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 
@@ -632,7 +638,7 @@ public abstract class AbstractColumnNameFinder implements SelectItemVisitor,
 	 */
 	@Override
 	public void visit(WhenClause whenClause) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException(i18n("no_support"));
 
 	}
 

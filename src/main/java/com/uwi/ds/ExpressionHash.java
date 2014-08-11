@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import com.uwi.utils.Configuration;
 import com.uwi.utils.KeyValue;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ExpressionHash.
  */
-public class ExpressionHash {
+public class ExpressionHash extends Configuration {
 
 	/** The bucket. */
 	LinkedHashMap<String, List<KeyValue>> bucket;
@@ -131,7 +132,7 @@ public class ExpressionHash {
 	 * @return true, if successful
 	 */
 	private boolean hasParen(String inc) {
-		return Pattern.matches("^\\(.*\\)$", inc);
+		return Pattern.matches(i18n("paren_regex"), inc);
 	}
 
 	/**
@@ -170,7 +171,7 @@ public class ExpressionHash {
 	 * @return the string
 	 */
 	public String mergeParen() {
-		return String.format("( %s )", merge());
+		return i18n("param_exp", merge());
 	}
 
 }

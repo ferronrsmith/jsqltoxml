@@ -3,12 +3,13 @@ package com.uwi.cmd;
 import org.kohsuke.args4j.Option;
 
 import com.uwi.enums.ResultType;
+import com.uwi.utils.Configuration;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Loader.
  */
-public class Loader {
+public class Loader extends Configuration {
 
 	/** The sql. */
 	@Option(name = "-sql", usage = "SQL String", aliases = { "-s" }, required = true)
@@ -50,7 +51,7 @@ public class Loader {
 	 * @return the type
 	 */
 	public ResultType getType() {
-		return type == null ? ResultType.XML : type;
+		return type == null ? DEFAULT_TYPE : type;
 	}
 
 	/**
