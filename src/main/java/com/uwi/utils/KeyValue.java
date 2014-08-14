@@ -34,18 +34,6 @@ public class KeyValue extends Configuration implements Serializable {
 	 *            the key
 	 * @param value
 	 *            the value
-	 */
-	public KeyValue(String key, String value) {
-		this(key, value, null);
-	}
-
-	/**
-	 * Instantiates a new key value.
-	 *
-	 * @param key
-	 *            the key
-	 * @param value
-	 *            the value
 	 * @param metaData
 	 *            the meta data
 	 */
@@ -120,7 +108,7 @@ public class KeyValue extends Configuration implements Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

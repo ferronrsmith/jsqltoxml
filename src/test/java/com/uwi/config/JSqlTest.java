@@ -174,6 +174,55 @@ public class JSqlTest {
 		assertTrue(isValidXpath(xpath));
 	}
 
+	@Test
+	public void testCountSelectedColumnWithLikeContains() throws Exception {
+		String xpath = JSql
+				.generateXpath("select count(name) from country where author LIKE '%James%'");
+		assertEquals("count(//country/author[contains (., 'James')])", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testCountSelectedColumnWithLikeEnd() throws Exception {
+		String xpath = JSql
+				.generateXpath("select count(name) from country where author LIKE 'James%'");
+		assertEquals("count(//country/author[ends-with (., 'James')])", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testCountSelectedColumnWithLikeStar() throws Exception {
+		String xpath = JSql
+				.generateXpath("select count(name) from country where author LIKE '%James'");
+		assertEquals("count(//country/author[starts-with (., 'James')])", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testCountSelectedColumnWithRange() throws Exception {
+		String xpath = JSql
+				.generateXpath("select count(name) from country where price >= 10 and price <= 10");
+		assertEquals("count(//country[price>=10 and price<=10]/name)", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testCountSelectedColumnWithWhere() throws Exception {
+		String xpath = JSql
+				.generateXpath("select count(name) from country where price = 10");
+		assertEquals("count(//country[price=10]/name)", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testCountSelectedColumnWithWhereAnd() throws Exception {
+		String xpath = JSql
+				.generateXpath("select count(name) from country where price = 10 and name = 'Tokyo'");
+		assertEquals("count(//country[price=10 and name/text()='Tokyo']/name)",
+				xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
 	/**
 	 * Test count throws exception with multiple columns.
 	 *
@@ -276,6 +325,16 @@ public class JSqlTest {
 		assertTrue(isValidXpath(xpath));
 	}
 
+	@Test
+	public void testLikeContainsSelect() throws Exception {
+		String xpath = JSql
+				.generateXpath("select name, age from country where food LIKE '%hot%'");
+		assertEquals(
+				"//country/food[contains (., 'hot')]/../age|//country/food[contains (., 'hot')]/../name",
+				xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
 	/**
 	 * Test like ends with.
 	 *
@@ -290,6 +349,16 @@ public class JSqlTest {
 		assertTrue(isValidXpath(xpath));
 	}
 
+	@Test
+	public void testLikeEndsWithSelect() throws Exception {
+		String xpath = JSql
+				.generateXpath("select name, age from country where food LIKE 'dog%'");
+		assertEquals(
+				"//country/food[ends-with (., 'dog')]/../age|//country/food[ends-with (., 'dog')]/../name",
+				xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
 	/**
 	 * Test like starts with.
 	 *
@@ -301,6 +370,16 @@ public class JSqlTest {
 		String xpath = JSql
 				.generateXpath("select * from country where food LIKE '%hot'");
 		assertEquals("//country/food[starts-with (., 'hot')]/..", xpath);
+		assertTrue(isValidXpath(xpath));
+	}
+
+	@Test
+	public void testLikeStartsWithSelect() throws Exception {
+		String xpath = JSql
+				.generateXpath("select name, age from country where food LIKE '%hot'");
+		assertEquals(
+				"//country/food[starts-with (., 'hot')]/../age|//country/food[starts-with (., 'hot')]/../name",
+				xpath);
 		assertTrue(isValidXpath(xpath));
 	}
 

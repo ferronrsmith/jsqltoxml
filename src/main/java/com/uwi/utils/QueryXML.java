@@ -25,21 +25,22 @@ import com.uwi.enums.ResultType;
  */
 public class QueryXML<E> extends Configuration {
 
-	private List<Element> checkForCount(String xpath, List<Element> results) {
-		if (Pattern.matches(i18n("count_regex"), xpath)
-				|| Pattern.matches(i18n("countr_attr_regex"), xpath)) {
+	@SuppressWarnings("unchecked")
+	private List<Element> checkForCount(String xpath, List<?> input) {
+		List<Element> result = null;
+		if (Pattern.matches(i18n("count_regex"), xpath)) {
 			Element element = DocumentHelper.createElement("resultCount");
-			if (results.size() > 0) {
-				element.setText(String.valueOf(results.get(0)));
-			} else {
-				element.setText("0");
+			if (input.size() > 0) {
+				long count = Math.round((double) input.get(0));
+				element.setText(String.valueOf(count));
 			}
-			results = new ArrayList<Element>();
-			results.add(element);
+			result = new ArrayList<Element>();
+			result.add(element);
 		} else {
 			System.out.println(i18n("no_count"));
+			return (List<Element>) input;
 		}
-		return results;
+		return result;
 	}
 
 	/**

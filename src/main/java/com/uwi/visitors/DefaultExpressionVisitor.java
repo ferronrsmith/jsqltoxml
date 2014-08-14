@@ -20,6 +20,7 @@ import com.uwi.ds.ExpressionHash;
 import com.uwi.enums.ExpressionType;
 import com.uwi.utils.KeyValue;
 import com.uwi.utils.LinkIdentifierGenerator;
+import com.uwi.utils.Misc;
 import com.uwi.visitors.abst.AbstractExpressionVisitor;
 
 // TODO: Auto-generated Javadoc
@@ -102,6 +103,17 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 	}
 
 	/**
+	 * Loads the alternate numeric template if the expression is a numeric value
+	 * 
+	 * @param exp
+	 * @param tmpl
+	 * @return
+	 */
+	private String loadAltTemplate(Expression exp, String tmpl) {
+		return Misc.isDigits(exp.toString()) ? "n_" + tmpl : tmpl;
+	}
+
+	/**
 	 * Manage operands.
 	 *
 	 * @param exp
@@ -114,12 +126,14 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 		} else {
 			switch (exp.getStringExpression()) {
 			case "!=":
-				equalTo = i18n("not_exp", exp.getLeftExpression(),
-						exp.getRightExpression());
+				equalTo = i18n(
+						loadAltTemplate(exp.getRightExpression(), "not_exp"),
+						exp.getLeftExpression(), exp.getRightExpression());
 				break;
 			case "=":
-				equalTo = i18n("equal_exp", exp.getLeftExpression(),
-						exp.getRightExpression());
+				equalTo = i18n(
+						loadAltTemplate(exp.getRightExpression(), "equal_exp"),
+						exp.getLeftExpression(), exp.getRightExpression());
 				break;
 			case ">":
 			case "<":
@@ -219,7 +233,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 		// TODO Auto-generated method stub
 		tree.add(new KeyValue(ExpressionType.LIKE.getValue(),
 				likeOperand(likeExpression), new LinkIdentifierGenerator()
-		.nextSessionId()));
+						.nextSessionId()));
 	}
 
 	/**

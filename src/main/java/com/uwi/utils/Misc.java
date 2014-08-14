@@ -49,6 +49,31 @@ public class Misc extends Configuration {
 		return true;
 	}
 
+	// -----------------------------------------------------------------------
+	/**
+	 * <p>
+	 * Checks whether the <code>String</code> contains only digit characters.
+	 * </p>
+	 *
+	 * <p>
+	 * <code>Null</code> and empty String will return <code>false</code>.
+	 * </p>
+	 *
+	 * @param str
+	 *            the <code>String</code> to check
+	 */
+	public static boolean isDigits(String str) {
+		if (Misc.isBlank(str)) {
+			return false;
+		}
+		for (int i = 0; i < str.length(); i++) {
+			if (!Character.isDigit(str.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * <p>
 	 * Checks if a CharSequence is not empty (""), not null and not whitespace

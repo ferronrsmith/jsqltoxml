@@ -50,8 +50,8 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 	 */
 	private String addNode(List<SelectItem> selectItems, String table) {
 		StringBuilder sb = new StringBuilder();
-		List<String> columns = new ColumnNameFinder(selectItems, table)
-				.getColumnNames();
+		List<String> columns = new ColumnNameFinder(selectItems, table,
+				whereClause).getColumnNames();
 		for (int i = 0; i < columns.size(); i++) {
 			// String.format("//%s/%s", table, columns.get(i))
 			sb.append(formatOutput(table, columns.get(i), whereClause));
@@ -85,12 +85,16 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 			// food:contains(., 'psi')
 
 			if (Pattern.matches(i18n("count_regex"), col)) {
-				// count expression with where clause
-				output = i18n("count_exp", tb, whereClause);
+				output = col;
 			} else {
 				String parts[] = whereClause.split(":");
 				if (parts.length == 2) {
-					output = i18n("like_exp", tb, parts[0], parts[1]);
+					if (col.equals(".")) {
+						output = i18n("like_exp", tb, parts[0], parts[1]);
+					} else {
+						output = i18n("in_like_exp", tb, parts[0], parts[1],
+								col);
+					}
 				} else {
 					output = i18n("where_exp", tb, whereClause, col);
 				}
@@ -111,7 +115,7 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * net.sf.jsqlparser.statement.select.SelectVisitor#visit(net.sf.jsqlparser
 	 * .statement.select.PlainSelect)

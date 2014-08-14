@@ -45,7 +45,7 @@ public class Configuration {
 	 * Instantiates a new configuration.
 	 */
 	public Configuration() {
-		loadConfiguration(loadProperties("conf.properties"));
+		loadConfiguration();
 	}
 
 	/**
@@ -82,8 +82,8 @@ public class Configuration {
 	 */
 	public Configuration loadConfiguration(Properties conf) {
 		if (conf != null) {
-			DEFAULT_LANG = conf.getProperty("language");
-			DEFAULT_TYPE = ResultType.parse(conf.getProperty("type"),
+			DEFAULT_LANG = conf.getProperty("language", "en");
+			DEFAULT_TYPE = ResultType.parse(conf.getProperty("type", "xml"),
 					ResultType.XML);
 			properties = loadProperties(String.format("%s.properties",
 					DEFAULT_LANG));

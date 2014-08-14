@@ -36,6 +36,8 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 	/** The current tb. */
 	String currentTb;
 
+	String whereClause;
+
 	/**
 	 * Instantiates a new column name finder.
 	 *
@@ -43,10 +45,13 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 	 *            the select items
 	 * @param table
 	 *            the table
+	 * @param whereClause
 	 */
-	public ColumnNameFinder(List<SelectItem> selectItems, String table) {
+	public ColumnNameFinder(List<SelectItem> selectItems, String table,
+			String whereClause) {
 		this.selectItems = selectItems;
 		this.currentTb = table;
+		this.whereClause = whereClause;
 	}
 
 	/**
@@ -129,9 +134,25 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 			if (expLs != null && expLs.getExpressions().size() > 1) {
 				throw new IllegalArgumentException(i18n("count_single_param"));
 			} else {
-				columns.add(i18n("count_regex_param", currentTb,
-						expLs == null ? "*" : expLs.getExpressions().get(0)
-								.toString()));
+
+				String selection = expLs == null ? "*" : expLs.getExpressions()
+						.get(0).toString();
+
+				// count(//book[auth:ends-with (., 'James')]/author)
+				if (Misc.isNotBlank(whereClause)) {
+					String parts[] = whereClause.split(":");
+					if (parts.length == 2) {
+						columns.add(i18n("count_like_exp", currentTb, parts[0],
+								parts[1]));
+					} else if (selection.equals("*")) {
+						columns.add(i18n("count_exp", currentTb, whereClause));
+					} else {
+						columns.add(i18n("counte_regex_where_param", currentTb,
+								whereClause, selection));
+					}
+				} else {
+					columns.add(i18n("count_regex_param", currentTb, selection));
+				}
 			}
 		}
 	}
