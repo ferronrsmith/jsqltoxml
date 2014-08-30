@@ -113,7 +113,7 @@ public class NewJFrame extends javax.swing.JFrame {
 		try {
 			// TODO add your handling code here:
 			// JOptionPane.showMessageDialog(this, "tesung");
-			List<String> records = com.uwi.config.JSql.parseXML(
+			List<String> records = com.uwi.config.Spat.parseXML(
 					txtFileName.getText(), txtSql.getText(), ResultType.XML,
 					null);
 			if (records != null && records.size() > 0) {

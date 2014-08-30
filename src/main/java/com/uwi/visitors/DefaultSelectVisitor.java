@@ -76,27 +76,27 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 	public String formatOutput(String tb, String col, String whereClause) {
 		String output = "";
 		if (Misc.isBlank(whereClause)) {
-			if (Pattern.matches(i18n("count_regex"), col)) {
+			if (Pattern.matches(i18n("c_count_regex"), col)) {
 				output = col;
 			} else {
-				output = i18n("select_exp", tb, col);
+				output = i18n("c_select_exp", tb, col);
 			}
 		} else {
 			// food:contains(., 'psi')
 
-			if (Pattern.matches(i18n("count_regex"), col)) {
+			if (Pattern.matches(i18n("c_count_regex"), col)) {
 				output = col;
 			} else {
 				String parts[] = whereClause.split(":");
 				if (parts.length == 2) {
 					if (col.equals(".")) {
-						output = i18n("like_exp", tb, parts[0], parts[1]);
+						output = i18n("c_like_exp", tb, parts[0], parts[1]);
 					} else {
-						output = i18n("in_like_exp", tb, parts[0], parts[1],
+						output = i18n("c_in_like_exp", tb, parts[0], parts[1],
 								col);
 					}
 				} else {
-					output = i18n("where_exp", tb, whereClause, col);
+					output = i18n("c_where_exp", tb, whereClause, col);
 				}
 			}
 
@@ -115,7 +115,7 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * net.sf.jsqlparser.statement.select.SelectVisitor#visit(net.sf.jsqlparser
 	 * .statement.select.PlainSelect)

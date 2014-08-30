@@ -14,7 +14,8 @@ import org.dom4j.io.XMLWriter;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Misc.
+ * The <code>Misc</code> class defines static utility methods that is used
+ * through-out the library.
  */
 public class Misc extends Configuration {
 
@@ -24,11 +25,11 @@ public class Misc extends Configuration {
 	 * </p>
 	 *
 	 * <pre>
-	 * StringUtils.isBlank(null)      = true
-	 * StringUtils.isBlank("")        = true
-	 * StringUtils.isBlank(" ")       = true
-	 * StringUtils.isBlank("bob")     = false
-	 * StringUtils.isBlank("  bob  ") = false
+	 * Misc.isBlank(null)      = true
+	 * Misc.isBlank("")        = true
+	 * Misc.isBlank(" ")       = true
+	 * Misc.isBlank("bob")     = false
+	 * Misc.isBlank("  bob  ") = false
 	 * </pre>
 	 *
 	 * @param cs
@@ -81,11 +82,11 @@ public class Misc extends Configuration {
 	 * </p>
 	 *
 	 * <pre>
-	 * StringUtils.isNotBlank(null)      = false
-	 * StringUtils.isNotBlank("")        = false
-	 * StringUtils.isNotBlank(" ")       = false
-	 * StringUtils.isNotBlank("bob")     = true
-	 * StringUtils.isNotBlank("  bob  ") = true
+	 * Misc.isNotBlank(null)      = false
+	 * Misc.isNotBlank("")        = false
+	 * Misc.isNotBlank(" ")       = false
+	 * Misc.isNotBlank("bob")     = true
+	 * Misc.isNotBlank("  bob  ") = true
 	 * </pre>
 	 *
 	 * @param cs
@@ -98,7 +99,7 @@ public class Misc extends Configuration {
 	}
 
 	/**
-	 * Pretty print.
+	 * Properly formats XML document
 	 *
 	 * @param xml
 	 *            the xml

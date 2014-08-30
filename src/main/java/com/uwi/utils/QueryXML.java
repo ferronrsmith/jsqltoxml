@@ -28,7 +28,7 @@ public class QueryXML<E> extends Configuration {
 	@SuppressWarnings("unchecked")
 	private List<Element> checkForCount(String xpath, List<?> input) {
 		List<Element> result = null;
-		if (Pattern.matches(i18n("count_regex"), xpath)) {
+		if (Pattern.matches(i18n("c_count_regex"), xpath)) {
 			Element element = DocumentHelper.createElement("resultCount");
 			if (input.size() > 0) {
 				long count = Math.round((double) input.get(0));

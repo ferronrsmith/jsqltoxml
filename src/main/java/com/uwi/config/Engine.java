@@ -41,7 +41,7 @@ public class Engine {
 		}
 
 		try {
-			JSql.parse(loader.getXmlFile(), loader.getSql(), loader.getType(),
+			Spat.parse(loader.getXmlFile(), loader.getSql(), loader.getType(),
 					loader.getOutputFile());
 		} catch (JSQLParserException e) {
 			System.err.println(e.getMessage());

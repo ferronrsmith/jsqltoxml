@@ -1,4 +1,6 @@
 com.uwi.cmd
+com.uwi.config
+com.uwi.ds
+com.uwi.enums
 com.uwi.utils
-ext
-jsqltoxml
+com.uwi.visitors

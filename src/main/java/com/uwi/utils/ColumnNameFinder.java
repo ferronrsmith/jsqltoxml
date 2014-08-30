@@ -15,9 +15,10 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 
 import com.uwi.visitors.abst.AbstractColumnNameFinder;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ColumnNameFinder.
+ * The <code>ColumnNameFinder</code> class retrieves a list of columns from
+ * {@link SelectItem}. Logic for handling {@link SelectItem} item function is
+ * added here. Currently only the <b>count</b> function has been implemented.
  */
 public class ColumnNameFinder extends AbstractColumnNameFinder {
 
@@ -55,14 +56,14 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 	}
 
 	/**
-	 * Adds the * operator to the set.
+	 * Adds the * operator to the set. [*] represents <b>ALL_COLUMNS</b>
 	 */
 	private void addAll() {
 		columns.add(".");
 	}
 
 	/**
-	 * Gets the table names.
+	 * Retrieve table names from the list of {@link SelectItem}
 	 *
 	 * @return the table names
 	 */
@@ -76,7 +77,7 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 	}
 
 	/**
-	 * Inits the.
+	 * Initialize properties
 	 */
 	private void init() {
 		output = new ArrayList<String>();
@@ -131,27 +132,35 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
 		// TODO Auto-generated method stub
 		if (function.getName().equalsIgnoreCase("count")) {
 			ExpressionList expLs = function.getParameters();
+			// only process count fn if it only as 1 expression
 			if (expLs != null && expLs.getExpressions().size() > 1) {
-				throw new IllegalArgumentException(i18n("count_single_param"));
+				throw new IllegalArgumentException(i18n("c_count_single_param"));
 			} else {
 
+				// select portion of the query
+				// select *
+				// select name
 				String selection = expLs == null ? "*" : expLs.getExpressions()
 						.get(0).toString();
 
 				// count(//book[auth:ends-with (., 'James')]/author)
 				if (Misc.isNotBlank(whereClause)) {
+					// check if expression is a LIKE
 					String parts[] = whereClause.split(":");
+					// if 2 parts then whereClause contains a like expression
 					if (parts.length == 2) {
-						columns.add(i18n("count_like_exp", currentTb, parts[0],
-								parts[1]));
+						columns.add(i18n("c_count_like_exp", currentTb,
+								parts[0], parts[1]));
 					} else if (selection.equals("*")) {
-						columns.add(i18n("count_exp", currentTb, whereClause));
+						// if select is ALL_COLUMNS
+						columns.add(i18n("c_count_exp", currentTb, whereClause));
 					} else {
-						columns.add(i18n("counte_regex_where_param", currentTb,
-								whereClause, selection));
+						columns.add(i18n("c_count_regex_where_param",
+								currentTb, whereClause, selection));
 					}
 				} else {
-					columns.add(i18n("count_regex_param", currentTb, selection));
+					columns.add(i18n("c_count_regex_param", currentTb,
+							selection));
 				}
 			}
 		}

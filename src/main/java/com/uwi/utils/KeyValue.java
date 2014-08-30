@@ -2,9 +2,10 @@ package com.uwi.utils;
 
 import java.io.Serializable;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class KeyValue.
+ * The Class <code>KeyValue</code> is a container class that is used to store
+ * <K,V> throughout the library. The metaData Object is used to store additional
+ * information about the value contained within the class.
  */
 public class KeyValue extends Configuration implements Serializable {
 

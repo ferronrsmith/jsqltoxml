@@ -2,7 +2,6 @@ package com.uwi.enums;
 
 import net.sf.jsqlparser.expression.BinaryExpression;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Enum ExpressionType.
  */
@@ -82,7 +81,7 @@ public enum ExpressionType {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override

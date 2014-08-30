@@ -29,7 +29,7 @@ public class XMLQueryTest {
 
 	@Test
 	public void testCountRoot() throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select count(book) from bookstore", ResultType.STRING, "");
 		assertEquals(1, results.size());
 		assertEquals("4", results.get(0));
@@ -37,7 +37,7 @@ public class XMLQueryTest {
 
 	@Test
 	public void testElementCount() throws Exception {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select count(*) from book where attr_category = 'COOKING'",
 				ResultType.STRING, "");
 		assertEquals(1, results.size());
@@ -47,7 +47,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQuerLangyAttributeRetrieveCount()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select count(*) from title where attr_lang = 'en'",
 				ResultType.STRING, "");
 		assertEquals(1, results.size());
@@ -57,7 +57,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQuerLangyAttributeRetrieveElement()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select * from title where attr_lang = 'en'", ResultType.XML,
 				"");
 		assertEquals(4, results.size());
@@ -70,7 +70,7 @@ public class XMLQueryTest {
 
 	@Test
 	public void testQueryAttribute() throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select * from book where attr_category = 'COOKING'",
 				ResultType.XML, "");
 		assertEquals(1, results.size());
@@ -83,7 +83,7 @@ public class XMLQueryTest {
 
 	@Test
 	public void testQueryAttributeForNothing() throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML, "select * from country",
+		List<String> results = Spat.parseXML(bookXML, "select * from country",
 				ResultType.XML, "");
 		assertEquals(0, results.size());
 		assertEquals("[]", results.toString());
@@ -91,7 +91,7 @@ public class XMLQueryTest {
 
 	@Test
 	public void testQueryAttributeRetrieveCount() throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select count(*) from book where attr_category = 'COOKING'",
 				ResultType.STRING, "");
 		assertEquals(1, results.size());
@@ -100,7 +100,7 @@ public class XMLQueryTest {
 
 	@Test
 	public void testQueryAttributeRetrieveData() throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select author, price from book where attr_category = 'WEB'",
 				ResultType.XML, "");
 		assertEquals(8, results.size());
@@ -116,7 +116,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveDataAndConditional()
 			throws JSQLParserException {
-		List<String> results = JSql
+		List<String> results = Spat
 				.parseXML(
 						bookXML,
 						"select author, price from book where attr_category = 'WEB' and year = 2003",
@@ -134,7 +134,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementCount()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select count(author) from book", ResultType.STRING, "");
 		assertEquals(1, results.size());
 		assertEquals("8", results.get(0));
@@ -143,7 +143,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementCountWithCondition()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select count(author) from book where year = 2003",
 				ResultType.STRING, "");
 		assertEquals(1, results.size());
@@ -153,7 +153,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementCountWithConditionals()
 			throws JSQLParserException {
-		List<String> results = JSql
+		List<String> results = Spat
 				.parseXML(
 						bookXML,
 						"select count(author) from book where price > 30.00 and price < 40.00",
@@ -165,7 +165,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementCountWithConditionCreate()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select count(author) from book where year >= 2005",
 				ResultType.STRING, "");
 		assertEquals(1, results.size());
@@ -175,7 +175,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementCountWithLIKECondition()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select count(author) from book where author LIKE '%James'",
 				ResultType.STRING, "");
 		assertEquals(1, results.size());
@@ -185,7 +185,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementWithConditionals()
 			throws JSQLParserException {
-		List<String> results = JSql
+		List<String> results = Spat
 				.parseXML(
 						bookXML,
 						"select author from book where price > 30.00 and price < 40.00",
@@ -197,7 +197,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementWithConditionGreate()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select author from book where year >= 2005", ResultType.XML,
 				"");
 		assertEquals(2, results.size());
@@ -209,7 +209,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementWithLIKECondition()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select * from book where author LIKE '%James'",
 				ResultType.XML, "");
 		assertEquals(1, results.size());
@@ -227,7 +227,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementWithLIKEConditionSpecificColumns()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select year, title from book where author LIKE '%James'",
 				ResultType.XML, "");
 		assertEquals(2, results.size());
@@ -239,7 +239,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementWithLIKEContainsCondition()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select * from book where author LIKE '%Nagarajan%'",
 				ResultType.XML, "");
 		assertEquals(1, results.size());
@@ -257,7 +257,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveElementWithLIKEContainsConditionSelectElem()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select price from book where author LIKE '%Nagarajan%'",
 				ResultType.XML, "");
 		assertEquals(1, results.size());
@@ -267,7 +267,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveMultipleElement()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select author from book", ResultType.XML, "");
 		assertEquals(8, results.size());
 		assertEquals("[<author>Giada De Laurentiis</author>, "
@@ -283,7 +283,7 @@ public class XMLQueryTest {
 	@Test
 	public void testQueryAttributeRetrieveMultipleElements()
 			throws JSQLParserException {
-		List<String> results = JSql.parseXML(bookXML,
+		List<String> results = Spat.parseXML(bookXML,
 				"select price, author from book", ResultType.XML, "");
 		assertEquals(12, results.size());
 		assertEquals("[<author>Giada De Laurentiis</author>, "

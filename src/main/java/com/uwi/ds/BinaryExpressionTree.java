@@ -3,15 +3,33 @@ package com.uwi.ds;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import net.sf.jsqlparser.expression.BinaryExpression;
 
 import com.uwi.enums.ExpressionType;
 import com.uwi.utils.LinkIdentifierGenerator;
+import com.uwi.visitors.DefaultExpressionVisitor;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class BinaryExpressionTree.
+ * The <code>BinaryExpressionTree</code> class is a {@link Queue} that stores
+ * Expression traversal. When
+ * {@link DefaultExpressionVisitor#visitBinaryExpression(BinaryExpression)} is
+ * called, the expression is added to a {@link ArrayDeque} for later retrieval
+ * and querying. When multiple binary traversals are done such as <b>select *
+ * from country where name = 'Jamaica' and id = 99 or (name = 'Trinidad')</b>,
+ * the expression are added as follows :
+ *
+ * 1. name = 'Jamaica' AND id = 99 OR name = 'Trinidad'
+ *
+ * 2. id = 99 OR name = 'Trinidad'
+ *
+ * 3. name = 'Trinidad' AND id = 99
+ *
+ * This allows a visitor to <i>peek</i> at the current expression and view the
+ * left or right expression and operand string, allowing the code to be more
+ * flexible. A visitor only ever need to look at the last expression since that
+ * would be the currently processed expression.
  */
 public class BinaryExpressionTree {
 
@@ -30,7 +48,7 @@ public class BinaryExpressionTree {
 	}
 
 	/**
-	 * Adds the.
+	 * Adds a {@link BinaryExpression} to the {@link ArrayDeque}
 	 *
 	 * @param exp
 	 *            the exp
@@ -46,7 +64,7 @@ public class BinaryExpressionTree {
 	}
 
 	/**
-	 * Gets the.
+	 * Gets the {@link ArrayDeque} as a List
 	 *
 	 * @return the list
 	 */
@@ -64,7 +82,7 @@ public class BinaryExpressionTree {
 	}
 
 	/**
-	 * Peek.
+	 * Peek/Poll on the last expression
 	 *
 	 * @return the expression pair
 	 */
@@ -112,10 +130,9 @@ public class BinaryExpressionTree {
 	}
 
 	/**
-	 * Removes the.
+	 * Remove the last expression
 	 */
 	public void remove() {
 		expressions.removeLast();
 	}
-
 }

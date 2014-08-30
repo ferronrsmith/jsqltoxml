@@ -31,10 +31,15 @@ public class ExpressionHash extends Configuration {
 	}
 
 	/**
-	 * Adds the.
+	 * Adds the a KeyValue to a bucket. The {@link KeyValue#getMetaData()}
+	 * contains the unique_id for each <b>KeyValue</b>. If the session_id does
+	 * not exist with the bucket then a new item will be added and the
+	 * <b>KeyValue</b> added to a list. If the session_id already exists the
+	 * <b>KeyValue</b> will be appended to the existing list <b>K<session_id>,
+	 * V<List<KeyValue>></b>
 	 *
 	 * @param value
-	 *            the value
+	 *            {@link KeyValue} to be added
 	 * @return the expression hash
 	 */
 	public ExpressionHash add(KeyValue value) {
@@ -50,10 +55,16 @@ public class ExpressionHash extends Configuration {
 	}
 
 	/**
-	 * Cherry pick.
+	 * Cherry pick checks a record for the existence of a <b>key</b> and
+	 * <b>session_id</b>. If these values haven't been set, the first record
+	 * will be retrieved and its <b>key</b> and <b>session_id</id> assigned to
+	 * the input record.
+	 *
+	 * <b>NB:</b> Only two records exist at a given sub-level so the first
+	 * record key & session_id would be the same as the input record
 	 *
 	 * @param value
-	 *            the value
+	 *            incomplete {@link KeyValue}
 	 * @return the key value
 	 */
 	public KeyValue cherryPick(KeyValue value) {
@@ -68,7 +79,8 @@ public class ExpressionHash extends Configuration {
 	}
 
 	/**
-	 * Clear.
+	 * Clear bucket and keyValue lists. Used in cases where a <b>_temp</b>
+	 * {@link ExpressionHash} is created and must be cleared for re-use
 	 *
 	 * @return the expression hash
 	 */
@@ -79,7 +91,9 @@ public class ExpressionHash extends Configuration {
 	}
 
 	/**
-	 * Flatten.
+	 * The following function flattens a bucket of {@link KeyValue} list into a
+	 * <b>grouped & flatten</b> form that can be later merged with other
+	 * expressions.
 	 *
 	 * @return the list
 	 */
@@ -87,6 +101,10 @@ public class ExpressionHash extends Configuration {
 		List<KeyValue> result = new ArrayList<KeyValue>();
 		Iterator<Entry<String, List<KeyValue>>> bIter = bucket.entrySet()
 				.iterator();
+
+		// the following logic places related values into the KeyValue.
+		// Values are related by a unique session_id. Only 2 values (L<->R) at
+		// any level can have the same session_id
 		while (bIter.hasNext()) {
 			Entry<String, List<KeyValue>> entrySet = bIter.next();
 			List<KeyValue> kList = entrySet.getValue();
@@ -114,10 +132,10 @@ public class ExpressionHash extends Configuration {
 	}
 
 	/**
-	 * Checks for paren.
+	 * Checks the {@link KeyValue#getValue()} for paren.
 	 *
 	 * @param kv
-	 *            the kv
+	 *            {@link KeyValue} object
 	 * @return true, if successful
 	 */
 	private boolean hasParen(KeyValue kv) {
@@ -127,16 +145,24 @@ public class ExpressionHash extends Configuration {
 	/**
 	 * Checks for paren.
 	 *
-	 * @param inc
-	 *            the inc
+	 * <pre>
+	 * 	e.g. the following expression consists of parenthesis
+	 *  hasParen("select * from"); 	-> false;
+	 *  hasParen("(name)"); 		-> true;
+	 *  hasParen("(name "); 		-> false;
+	 *  hasParen("name)"); 			-> false;
+	 * </pre>
+	 *
+	 * @param input
+	 *            the value to be checked
 	 * @return true, if successful
 	 */
-	private boolean hasParen(String inc) {
-		return Pattern.matches(i18n("paren_regex"), inc);
+	private boolean hasParen(String input) {
+		return Pattern.matches(i18n("c_paren_regex"), input);
 	}
 
 	/**
-	 * List to string.
+	 * Converts a list of {@link KeyValue} to a space delimited string.
 	 *
 	 * @param kList
 	 *            the k list
@@ -171,7 +197,7 @@ public class ExpressionHash extends Configuration {
 	 * @return the string
 	 */
 	public String mergeParen() {
-		return i18n("param_exp", merge());
+		return i18n("c_param_exp", merge());
 	}
 
 }

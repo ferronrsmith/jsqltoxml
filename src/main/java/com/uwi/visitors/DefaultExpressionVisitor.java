@@ -74,7 +74,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 	}
 
 	private boolean isAttr(BinaryExpression exp) {
-		return Pattern.matches(i18n("attr_regex"), exp.getLeftExpression()
+		return Pattern.matches(i18n("c_attr_regex"), exp.getLeftExpression()
 				.toString());
 	}
 
@@ -93,24 +93,30 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 		char lst = right.charAt(right.length() - 1);
 		right = right.replaceAll("%", "");
 		if (fst == '%' && lst == '%') {
-			result = i18n("contains_exp", right);
+			result = i18n("c_contains_exp", right);
 		} else if (fst == '%' && lst != '%') {
-			result = i18n("startswith_exp", right);
+			result = i18n("c_startswith_exp", right);
 		} else if (fst != '%' && lst == '%') {
-			result = i18n("endswith_exp", right);
+			result = i18n("c_endswith_exp", right);
 		}
-		return i18n("like_part_exp", left, result);
+		return i18n("c_like_part_exp", left, result);
 	}
 
 	/**
 	 * Loads the alternate numeric template if the expression is a numeric value
-	 * 
+	 *
 	 * @param exp
 	 * @param tmpl
 	 * @return
 	 */
-	private String loadAltTemplate(Expression exp, String tmpl) {
-		return Misc.isDigits(exp.toString()) ? "n_" + tmpl : tmpl;
+	private String loadAlternativeTemplate(Expression exp, String tmpl) {
+		// c_equal_exp
+		String parts[] = tmpl.split(DEF_CONST);
+		if (Misc.isDigits(exp.toString()) && parts.length > 1) {
+			return "c_n_" + parts[1];
+		} else {
+			return tmpl;
+		}
 	}
 
 	/**
@@ -127,19 +133,19 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 			switch (exp.getStringExpression()) {
 			case "!=":
 				equalTo = i18n(
-						loadAltTemplate(exp.getRightExpression(), "not_exp"),
+						loadAlternativeTemplate(exp.getRightExpression(), "c_not_exp"),
 						exp.getLeftExpression(), exp.getRightExpression());
 				break;
 			case "=":
 				equalTo = i18n(
-						loadAltTemplate(exp.getRightExpression(), "equal_exp"),
+						loadAlternativeTemplate(exp.getRightExpression(), "c_equal_exp"),
 						exp.getLeftExpression(), exp.getRightExpression());
 				break;
 			case ">":
 			case "<":
 			case ">=":
 			case "<=":
-				equalTo = i18n("alt_exp", exp.getLeftExpression(),
+				equalTo = i18n("c_alt_exp", exp.getLeftExpression(),
 						exp.getStringExpression(), exp.getRightExpression());
 				break;
 			default:
@@ -173,7 +179,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 	private String processsAttr(BinaryExpression expression) {
 		String[] str = expression.getLeftExpression().toString().split("_");
 		String exp = expression.getStringExpression();
-		String equalTo = i18n("attribute_exp", str[1], exp,
+		String equalTo = i18n("c_attribute_exp", str[1], exp,
 				expression.getRightExpression());
 		return equalTo;
 	}

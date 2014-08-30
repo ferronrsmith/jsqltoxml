@@ -1,8 +1,10 @@
 package com.uwi.enums;
 
-// TODO: Auto-generated Javadoc
+import com.uwi.utils.QueryXML;
+
 /**
- * The Enum Type.
+ * The <code>ResultType</code> Enum contains types returned by
+ * {@link QueryXML#query(String, String, ResultType)}.
  */
 public enum ResultType {
 
@@ -24,9 +26,10 @@ public enum ResultType {
 	ELEMENT;
 
 	/**
-	 * Parses the.
+	 * Parses a String to a {@link ResultType}
 	 *
-	 * @param property the property
+	 * @param property
+	 *            the property
 	 * @return the result type
 	 */
 	public static ResultType parse(String property) {
@@ -39,10 +42,13 @@ public enum ResultType {
 	}
 
 	/**
-	 * Parses the.
+	 * Parses a String to a {@link ResultType}. If the String cannot be parsed
+	 * the defaultType is returned
 	 *
-	 * @param property the property
-	 * @param defaultType the default type
+	 * @param property
+	 *            the property - String
+	 * @param defaultType
+	 *            the default type - returned if String cannot be parsed
 	 * @return the result type
 	 */
 	public static ResultType parse(String property, ResultType defaultType) {
