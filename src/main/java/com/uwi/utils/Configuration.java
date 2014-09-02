@@ -11,7 +11,7 @@ import com.uwi.enums.ResultType;
  * The <code>Configuration</code> class manages global configurations for
  * <b>jsqltoxml</b>. By default the <b>conf.properties</b> file is loaded; i.e
  * This file should only contain global configuration such as language, output
- * or engine settings. The default lang is <b>'en'</b> & the default Engine
+ * or engine settings. The default language is <b>'en'</b> & the default Engine
  * output format is XML. The language specific file is loaded using the prefix
  * specified in the <b>conf.properties</b> file. e.g. [en].properties, where
  * <b>en</b> is the prefix.
@@ -19,7 +19,7 @@ import com.uwi.enums.ResultType;
 public class Configuration {
 
 	/**
-	 * Load properties file within the 'confs' folder.
+	 * Load properties file within the <b>'confs'</b> folder.
 	 *
 	 * @param propertyFile
 	 *            the property file
@@ -40,7 +40,7 @@ public class Configuration {
 		return prop;
 	}
 
-	/** The default lang. */
+	/** The default language. */
 	public static String DEFAULT_LANG = "EN";
 
 	/** The default type. */
@@ -83,7 +83,7 @@ public class Configuration {
 	}
 
 	/**
-	 * i18n retreival with {@link String#format(String, Object...)} support
+	 * i18n retrieval with {@link String#format(String, Object...)} support
 	 *
 	 * @param propertyName
 	 * @param args

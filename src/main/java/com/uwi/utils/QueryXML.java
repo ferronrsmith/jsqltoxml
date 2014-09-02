@@ -31,7 +31,7 @@ public class QueryXML<E> extends Configuration {
 		if (Pattern.matches(i18n("c_count_regex"), xpath)) {
 			Element element = DocumentHelper.createElement("resultCount");
 			if (input.size() > 0) {
-				long count = Math.round((double) input.get(0));
+				long count = Math.round((Double) input.get(0));
 				element.setText(String.valueOf(count));
 			}
 			result = new ArrayList<Element>();

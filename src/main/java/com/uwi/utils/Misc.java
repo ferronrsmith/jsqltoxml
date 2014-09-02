@@ -119,8 +119,9 @@ public class Misc extends Configuration {
 			sw = new StringWriter();
 			final XMLWriter writer = new XMLWriter(sw, format);
 			// write root to avoid XML declaration
-			// {@see
+			// <pre>
 			// http://stackoverflow.com/questions/5971649/dom4j-xml-declaration-in-document}
+			// </pre>
 			writer.write(document.getRootElement());
 		} catch (Exception e) {
 			throw new RuntimeException("Error pretty printing xml:\n" + xml, e);
@@ -128,6 +129,14 @@ public class Misc extends Configuration {
 		return sw.toString().trim();
 	}
 
+	/**
+	 * Reads a file contents into a string
+	 *
+	 * @param path
+	 *            - file path
+	 * @return
+	 * @throws IOException
+	 */
 	public static String readFilesToString(String path) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, Charset.forName("UTF-8"));
@@ -149,7 +158,6 @@ public class Misc extends Configuration {
 		try {
 			Files.write(Paths.get(outFile), data, StandardCharsets.UTF_8);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

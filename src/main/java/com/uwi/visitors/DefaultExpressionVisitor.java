@@ -17,6 +17,7 @@ import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
 
 import com.uwi.ds.BinaryExpressionTree;
 import com.uwi.ds.ExpressionHash;
+import com.uwi.enums.ConditionType;
 import com.uwi.enums.ExpressionType;
 import com.uwi.utils.KeyValue;
 import com.uwi.utils.LinkIdentifierGenerator;
@@ -130,21 +131,23 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 		if (isAttr(exp)) {
 			equalTo = processsAttr(exp);
 		} else {
-			switch (exp.getStringExpression()) {
-			case "!=":
+			switch (ConditionType.parse(exp.getStringExpression())) {
+			case NOT_EQUAL:
 				equalTo = i18n(
-						loadAlternativeTemplate(exp.getRightExpression(), "c_not_exp"),
-						exp.getLeftExpression(), exp.getRightExpression());
+						loadAlternativeTemplate(exp.getRightExpression(),
+								"c_not_exp"), exp.getLeftExpression(),
+								exp.getRightExpression());
 				break;
-			case "=":
+			case EQUAL:
 				equalTo = i18n(
-						loadAlternativeTemplate(exp.getRightExpression(), "c_equal_exp"),
-						exp.getLeftExpression(), exp.getRightExpression());
+						loadAlternativeTemplate(exp.getRightExpression(),
+								"c_equal_exp"), exp.getLeftExpression(),
+								exp.getRightExpression());
 				break;
-			case ">":
-			case "<":
-			case ">=":
-			case "<=":
+			case GREATER_THAN:
+			case LESS_THAN:
+			case GREATER_THAN_EQUAL:
+			case LESS_THAN_EQUAL:
 				equalTo = i18n("c_alt_exp", exp.getLeftExpression(),
 						exp.getStringExpression(), exp.getRightExpression());
 				break;

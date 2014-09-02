@@ -13,10 +13,6 @@ import net.sf.jsqlparser.expression.StringValue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.uwi.ds.BinaryExpressionTree;
-import com.uwi.ds.ExpressionPair;
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class BinaryExpressionTreeTest.
  */
