@@ -1,24 +1,24 @@
 <countries>
-	<country>
-		<name>India</name>
-		<food>rice</food>
-		<food>curry</food>
-		<food>roti</food>
-		<food>tandoori</food>
-		<drink>coconut water</drink>
-		<drink>lemon water</drink>
-		<food>pulao</food>
-		<food>barfi</food>
-		<food>palak paneer</food>
-		<food>sahi kabab</food>
-	</country>
-	<country>
-		<name>US</name>
-		<food>pizza</food>
-		<drink>pepsi</drink>
-		<drink>coke</drink>
-		<drink>red bull</drink>
-		<food>hot dog</food>
-		<food>smoky chicken</food>
-	</country>
+  <country>
+    <name>India</name>
+    <food>rice</food>
+    <food>curry</food>
+    <food>roti</food>
+    <food>tandoori</food>
+    <drink>coconut water</drink>
+    <drink>lemon water</drink>
+    <food>pulao</food>
+    <food>barfi</food>
+    <food>palak paneer</food>
+    <food>sahi kabab</food>
+  </country>
+  <country>
+    <name>US</name>
+    <food>pizza</food>
+    <drink>pepsi</drink>
+    <drink>coke</drink>
+    <drink>red bull</drink>
+    <food>hot dog</food>
+    <food>smoky chicken</food>
+  </country>
 </countries>
