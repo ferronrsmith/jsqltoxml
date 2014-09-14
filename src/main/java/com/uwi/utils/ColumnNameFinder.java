@@ -26,22 +26,22 @@ import java.util.Set;
  *
  * ```sql
  *  select * from
- *  // result [*]
+ *  # result [*]
  *
  *  select name, age, sex from
- *  // result [name, age, sex]
+ *  # result [name, age, sex]
  *
  *  select c.name, c.age, c.sex from
- *  // result [name, age, sex]
+ *  # result [name, age, sex]
  *
  *  select count(*)
- *  //result [count(*)]
+ *  # result [count(*)]
  *
  *  select count(name)
- *  //result [count(name)]
+ *  # result [count(name)]
  *
  *  select count(c.name)
- *  //result [count(name)]
+ *  # result [count(name)]
  * ```
  * </code>
  */
@@ -82,10 +82,11 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
      * @param table
      *         the table name
      * @param whereClause the whereClause
-     *  ##### Example
-     *  ```sql
-     *    where name = 'joe'
-     *  ```
+     *  <br />
+     * ##### Example
+     * ```sql
+     *   where name = 'joe'
+     * ```
      *
      */
     public ColumnNameFinder(List<SelectItem> selectItems, String table, String whereClause) {

@@ -11,22 +11,22 @@ The SQL statement contains any other function an *IllegalArgumentException* with
 
 ```sql
  select * from
- // result [*]
+ # result [*]
 
  select name, age, sex from
- // result [name, age, sex]
+ # result [name, age, sex]
 
  select c.name, c.age, c.sex from
- // result [name, age, sex]
+ # result [name, age, sex]
 
  select count(*)
- //result [count(*)]
+ # result [count(*)]
 
  select count(name)
- //result [count(name)]
+ # result [count(name)]
 
  select count(c.name)
- //result [count(name)]
+ # result [count(name)]
 ```
 
 
@@ -52,10 +52,11 @@ The SQL statement contains any other function an *IllegalArgumentException* with
 - <b>table</b>: 
         the table name
 - <b>whereClause</b>: the whereClause
- ##### Example
- ```sql
-   where name = 'joe'
- ```
+ <br />
+##### Example
+```sql
+  where name = 'joe'
+```
 
 
 #### <span style="font-size:12px;color:#AAAAAA">List&lt;String&gt;</span> <a style="font-size:16px;" name="1407082077">getColumnNames</a><span style="font-size:16px;">()</span>
