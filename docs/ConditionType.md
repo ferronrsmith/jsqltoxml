@@ -19,12 +19,11 @@ The **ConditionType** enum stores conditional types that can be parsed by
 
 Returns the ConditionType String Value
 ### Example
-     ```java
-         ConditionType ct = ConditionType.GREATER_THAN
-         ct.getValue()
-         // returns ">"
-     ```
-###
+```java
+ ConditionType ct = ConditionType.GREATER_THAN
+ ct.getValue()
+ // returns ">"
+```
 
 
 
@@ -37,11 +36,10 @@ Returns the ConditionType String Value
  Parses a String to a **ConditionType**. If the type is not supported by SPAT
  the `ConditionType.NULL` will be returned.
  ### Example
-     ```java
-         ConditionType.parse(">");
-         // returns ConditionType.GREATER_THAN
-     ```
- ###
+ ```java
+ ConditionType.parse(">");
+ // returns ConditionType.GREATER_THAN
+ ```
 
 
 
