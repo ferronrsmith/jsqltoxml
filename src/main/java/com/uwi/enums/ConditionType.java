@@ -2,14 +2,16 @@ package com.uwi.enums;
 
 /**
  * <code>
- * The **ConditionType** conditional types that can be parsed by
- * **DefaultExpressionVisitor#manageOperand** internal methods.
+ * The **ConditionType** enum stores conditional types that can be parsed by
+ * **DefaultExpressionVisitor#manageOperand** and its internal methods.
  * </code>
  */
 public enum ConditionType {
 
     /**
+     * <code>
      * The not equal.
+     * </code>
      */
     NOT_EQUAL("!="),
     /**
@@ -54,12 +56,18 @@ public enum ConditionType {
 
     /**
      * <code>
-     * Parses a String to a **ConditionType**.
-     *</code>
+     *  Parses a String to a **ConditionType**. If the type is not supported by SPAT
+     *  the `ConditionType.NULL` will be returned.
+     *  ### Example
+     *      ```java
+     *          ConditionType.parse(">");
+     *          // returns ConditionType.GREATER_THAN
+     *      ```
+     * </code>
      * @param property
-     *         the property
+     *         conditional string to be parsed.
      *
-     * @return the result type
+     * @return mapped ConditionType
      */
     public static ConditionType parse(String property) {
         for (ConditionType type : values()) {
@@ -71,8 +79,15 @@ public enum ConditionType {
     }
 
     /**
-     * Gets the value.
-     *
+     * <code>
+     * Returns the ConditionType String Value
+     * ### Example
+     *      ```java
+     *          ConditionType ct = ConditionType.GREATER_THAN
+     *          ct.getValue()
+     *          // returns ">"
+     *      ```
+     * </code>
      * @return the value
      */
     public String getValue() {
@@ -80,7 +95,6 @@ public enum ConditionType {
     }
 
     /*
-     * (non-Javadoc)
      * @internal
      * @see java.lang.Enum#toString()
      */

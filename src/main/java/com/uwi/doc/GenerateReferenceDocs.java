@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  */
 public class GenerateReferenceDocs {
 
-    private static final String DIST_DOCS = "./doc/";
+    private static final String DIST_DOCS = "./docs/";
     private static final Pattern IN_PARENS = Pattern.compile("public\\s+([^\\(]+)\\(([^\\)]*)");
 
     public static void main(String[] args) throws IOException {

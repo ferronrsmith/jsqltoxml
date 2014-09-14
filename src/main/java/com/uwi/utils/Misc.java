@@ -14,8 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
-
 /**
  * The <code>Misc</code> class defines static utility methods that is used
  * through-out the library.
@@ -48,7 +46,7 @@ public class Misc extends Configuration {
             return true;
         }
         for (int i = 0; i < strLen; i++) {
-            if (Character.isWhitespace(cs.charAt(i)) == false) {
+            if (!Character.isWhitespace(cs.charAt(i))) {
                 return false;
             }
         }

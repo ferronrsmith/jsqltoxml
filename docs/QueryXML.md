@@ -1,4 +1,4 @@
-<img src='spat.jpg' alt='SPAT' style='position: relative;top: 5px;'/> QueryXML
+![SPAT](spat.jpg) QueryXML
 =====
 
 
