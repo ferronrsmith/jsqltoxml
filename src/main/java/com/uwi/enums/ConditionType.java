@@ -94,11 +94,9 @@ public enum ConditionType {
         return value;
     }
 
-    /*
+    /**
      * @internal
-     * @see java.lang.Enum#toString()
      */
-    @Override
     public String toString() {
         return value;
     }
