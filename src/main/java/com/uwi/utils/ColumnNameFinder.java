@@ -16,9 +16,34 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The <code>ColumnNameFinder</code> class retrieves a list of columns from
- * {@link SelectItem}. Logic for handling {@link SelectItem} item function is
- * added here. Currently only the <b>count</b> function has been implemented.
+ * <code>
+ * The **ColumnNameFinder** class retrieves a list of column names from
+ * SelectItem. Only the select portion of an SQL statement is processed by this class.
+ * Currently only the **count** function has been implemented.
+ * The SQL statement contains any other function an *IllegalArgumentException* with be thrown
+ *
+ * ##### Examples
+ *
+ * ```sql
+ *  select * from
+ *  // result [*]
+ *
+ *  select name, age, sex from
+ *  // result [name, age, sex]
+ *
+ *  select c.name, c.age, c.sex from
+ *  // result [name, age, sex]
+ *
+ *  select count(*)
+ *  //result [count(*)]
+ *
+ *  select count(name)
+ *  //result [count(name)]
+ *
+ *  select count(c.name)
+ *  //result [count(name)]
+ * ```
+ * </code>
  */
 public class ColumnNameFinder extends AbstractColumnNameFinder {
 
@@ -53,10 +78,15 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
      * Instantiates a new column name finder.
      *
      * @param selectItems
-     *         the select items
+     *         the select items :- Anything between "SELECT" and "FROM"
      * @param table
-     *         the table
-     * @param whereClause
+     *         the table name
+     * @param whereClause the whereClause
+     *  ##### Example
+     *  ```sql
+     *    where name = 'joe'
+     *  ```
+     *
      */
     public ColumnNameFinder(List<SelectItem> selectItems, String table, String whereClause) {
         this.selectItems = selectItems;

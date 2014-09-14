@@ -1,7 +1,34 @@
 ![SPAT](spat.jpg) ColumnNameFinder
 =====
 
-ColumnNameFinder
+
+The **ColumnNameFinder** class retrieves a list of column names from
+SelectItem. Only the select portion of an SQL statement is processed by this class.
+Currently only the **count** function has been implemented.
+The SQL statement contains any other function an *IllegalArgumentException* with be thrown
+
+##### Examples
+
+```sql
+ select * from
+ // result [*]
+
+ select name, age, sex from
+ // result [name, age, sex]
+
+ select c.name, c.age, c.sex from
+ // result [name, age, sex]
+
+ select count(*)
+ //result [count(*)]
+
+ select count(name)
+ //result [count(name)]
+
+ select count(c.name)
+ //result [count(name)]
+```
+
 
 
 
@@ -21,10 +48,14 @@ ColumnNameFinder
 -----
 
 - <b>selectItems</b>: 
-        the select items
+        the select items :- Anything between "SELECT" and "FROM"
 - <b>table</b>: 
-        the table
-- <b>whereClause</b>: 
+        the table name
+- <b>whereClause</b>: the whereClause
+ ##### Example
+ ```sql
+   where name = 'joe'
+ ```
 
 
 #### <span style="font-size:12px;color:#AAAAAA">List&lt;String&gt;</span> <a style="font-size:16px;" name="1407082077">getColumnNames</a><span style="font-size:16px;">()</span>
