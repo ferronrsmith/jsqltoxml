@@ -52,7 +52,7 @@ The SQL statement contains any other function an *IllegalArgumentException* with
 - <b>table</b>: 
         the table name
 - <b>whereClause</b>: the whereClause
- <br />
+                   
 ##### Example
 ```sql
   where name = 'joe'

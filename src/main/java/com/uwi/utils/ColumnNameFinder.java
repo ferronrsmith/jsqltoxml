@@ -82,7 +82,7 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
      * @param table
      *         the table name
      * @param whereClause the whereClause
-     *  <br />
+     *
      * ##### Example
      * ```sql
      *   where name = 'joe'
