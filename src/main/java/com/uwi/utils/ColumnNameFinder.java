@@ -21,27 +21,27 @@ import java.util.Set;
  * SelectItem. Only the select portion of an SQL statement is processed by this class.
  * Currently only the **count** function has been implemented.
  * The SQL statement contains any other function an *IllegalArgumentException* with be thrown
- *
+ * <p/>
  * ##### Examples
- *
+ * <p/>
  * ```sql
- *  select * from
- *  # result [*]
- *
- *  select name, age, sex from
- *  # result [name, age, sex]
- *
- *  select c.name, c.age, c.sex from
- *  # result [name, age, sex]
- *
- *  select count(*)
- *  # result [count(*)]
- *
- *  select count(name)
- *  # result [count(name)]
- *
- *  select count(c.name)
- *  # result [count(name)]
+ * select * from
+ * # result [*]
+ * <p/>
+ * select name, age, sex from
+ * # result [name, age, sex]
+ * <p/>
+ * select c.name, c.age, c.sex from
+ * # result [name, age, sex]
+ * <p/>
+ * select count(*)
+ * # result [count(*)]
+ * <p/>
+ * select count(name)
+ * # result [count(name)]
+ * <p/>
+ * select count(c.name)
+ * # result [count(name)]
  * ```
  * </code>
  */
@@ -81,13 +81,13 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
      *         the select items :- Anything between "SELECT" and "FROM"
      * @param table
      *         the table name
-     * @param whereClause the whereClause
-     *
-     * ##### Example
-     * ```sql
-     *   where name = 'joe'
-     * ```
-     *
+     * @param whereClause
+     *         the whereClause
+     *         <p/>
+     *         ##### Example
+     *         ```sql
+     *         where name = 'joe'
+     *         ```
      */
     public ColumnNameFinder(List<SelectItem> selectItems, String table, String whereClause) {
         this.selectItems = selectItems;
@@ -96,16 +96,20 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
     }
 
     /**
+     * <code>
      * Adds the * operator to the set. [*] represents <b>ALL_COLUMNS</b>
+     * </code>
      */
     private void addAll() {
         columns.add(".");
     }
 
     /**
-     * Retrieve table names from the list of {@link SelectItem}
+     * <code>
+     * Retrieve columns names from the list of SelectItem
+     * </code>
      *
-     * @return the table names
+     * @return list of column names
      */
     public List<String> getColumnNames() {
         init();
@@ -124,23 +128,20 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
         columns = new HashSet<String>();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jsqlparser.statement.select.SelectItemVisitor#visit(net.sf.jsqlparser
+    /**
+     * @internal
+     * @see net.sf.jsqlparser.statement.select.SelectItemVisitor#visit(net.sf.jsqlparser.statement.select.AllColumns) (net.sf.jsqlparser
      * .statement.select.AllColumns)
      */
-    @Override
     public void visit(AllColumns allColumns) {
         addAll();
     }
 
-    /*
+    /**
      * (non-Javadoc)
      *
-     * @see
-     * net.sf.jsqlparser.statement.select.SelectItemVisitor#visit(net.sf.jsqlparser
+     * @internal
+     * @see net.sf.jsqlparser.statement.select.SelectItemVisitor#visit(net.sf.jsqlparser.statement.select.AllColumns) (net.sf.jsqlparser
      * .statement.select.AllTableColumns)
      */
     @Override
@@ -148,11 +149,11 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
         addAll();
     }
 
-    /*
+    /**
      * (non-Javadoc)
      *
-     * @see
-     * net.sf.jsqlparser.statement.select.SelectItemVisitor#visit(net.sf.jsqlparser
+     * @internal
+     * @see net.sf.jsqlparser.statement.select.SelectItemVisitor#visit(net.sf.jsqlparser.statement.select.AllColumns) (net.sf.jsqlparser
      * .statement.select.SelectExpressionItem)
      */
     @Override
@@ -160,16 +161,13 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
         selectExpressionItem.getExpression().accept(this);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * <code>
      *
-     * @see
-     * net.sf.jsqlparser.expression.ExpressionVisitor#visit(net.sf.jsqlparser
-     * .expression.Function)
+     * </code>
      */
     @Override
     public void visit(Function function) {
-        // TODO Auto-generated method stub
         if (function.getName().equalsIgnoreCase("count")) {
             ExpressionList expLs = function.getParameters();
             // only process count fn if it only as 1 expression
@@ -208,12 +206,10 @@ public class ColumnNameFinder extends AbstractColumnNameFinder {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * net.sf.jsqlparser.expression.ExpressionVisitor#visit(net.sf.jsqlparser
-     * .schema.Column)
+    /**
+     * <code>
+     *     Following visitor `gets` the column name from the and adds it to the result list
+     * </code>
      */
     @Override
     public void visit(Column tableColumn) {

@@ -38,7 +38,7 @@ public class QueryXML<E> extends Configuration {
             result = new ArrayList<Element>();
             result.add(element);
         } else {
-            System.out.println(i18n("no_count"));
+            log(i18n("no_count"));
             return (List<Element>) input;
         }
         return result;
@@ -129,7 +129,7 @@ public class QueryXML<E> extends Configuration {
                 result.add(res);
             }
         } catch (DocumentException e) {
-            e.printStackTrace();
+            System.err.format("[%s] file not found", xmlFileName);
         } catch (JaxenException e) {
             e.printStackTrace();
         }

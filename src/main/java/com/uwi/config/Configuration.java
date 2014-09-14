@@ -72,6 +72,18 @@ public class Configuration {
         return prop;
     }
 
+    public void log (String property) {
+        if(i18n("log_enabled").equals("false")) {
+            System.out.println(property);
+        }
+    }
+
+    public void logError (String property) {
+        if(i18n("log_enabled").equals("false")) {
+            System.out.println(property);
+        }
+    }
+
     /**
      * i18n <K,V> property retrieval
      *
