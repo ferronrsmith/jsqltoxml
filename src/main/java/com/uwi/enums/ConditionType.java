@@ -58,7 +58,7 @@ public enum ConditionType {
      * <code>
      *  Parses a String to a **ConditionType**. If the type is not supported by SPAT
      *  the `ConditionType.NULL` will be returned.
-     *  ##### Example
+     * ##### Example
      *  ```java
      *  ConditionType.parse(">");
      *  // returns ConditionType.GREATER_THAN
@@ -82,7 +82,7 @@ public enum ConditionType {
      * <code>
      * Returns the ConditionType String Value
      * ##### Example
-     * ```java
+     *  ```java
      *  ConditionType ct = ConditionType.GREATER_THAN
      *  ct.getValue()
      *  // returns ">"
