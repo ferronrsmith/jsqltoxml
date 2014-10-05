@@ -9,7 +9,7 @@ import java.io.Serializable;
  * <K,V> throughout the library. The metaData Object is used to store additional
  * information about the value contained within the class.
  */
-public class KeyValue extends Configuration implements Serializable {
+public final class KeyValue extends Configuration implements Serializable {
 
     /**
      * The Constant serialVersionUID.

@@ -135,7 +135,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
     private void manageOperands(BinaryExpression exp) {
         String equalTo = null;
         if (isAttr(exp)) {
-            equalTo = processsAttr(exp);
+            equalTo = processAttr(exp);
         } else {
             switch (ConditionType.parse(exp.getStringExpression())) {
             case NOT_EQUAL:
@@ -185,12 +185,11 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
         _temp.clear();
     }
 
-    private String processsAttr(BinaryExpression expression) {
+    private String processAttr(BinaryExpression expression) {
         String[] str = expression.getLeftExpression().toString().split("_");
         String exp = expression.getStringExpression();
-        String equalTo = i18n(
+        return i18n(
                 "c_attribute_exp", str[1], exp, expression.getRightExpression());
-        return equalTo;
     }
 
     /**

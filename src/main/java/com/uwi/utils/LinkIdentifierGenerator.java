@@ -10,7 +10,7 @@ import java.security.SecureRandom;
  * Expression and an Expression group
  * </code>
  */
-public class LinkIdentifierGenerator {
+public final class LinkIdentifierGenerator {
 
     /**
      * The random.

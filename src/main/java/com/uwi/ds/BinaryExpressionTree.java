@@ -31,7 +31,7 @@ import java.util.List;
  * would be the currently processed expression.
  * </code>
  */
-public class BinaryExpressionTree {
+public final class BinaryExpressionTree {
 
     /**
      * The insert failed list.

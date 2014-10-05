@@ -93,10 +93,8 @@ public enum ExpressionType {
         return value;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Enum#toString()
+    /**
+     * @internal
      */
     @Override
     public String toString() {

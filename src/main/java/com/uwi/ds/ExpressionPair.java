@@ -8,7 +8,7 @@ import net.sf.jsqlparser.expression.BinaryExpression;
 /**
  * The Class ExpressionPair.
  */
-public class ExpressionPair extends Configuration {
+public final class ExpressionPair extends Configuration {
 
     /**
      * The type.

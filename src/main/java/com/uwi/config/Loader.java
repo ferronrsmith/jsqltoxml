@@ -3,12 +3,38 @@ package com.uwi.config;
 import com.uwi.enums.ResultType;
 import org.kohsuke.args4j.Option;
 
-// TODO: Auto-generated Javadoc
-
 /**
- * The Class Loader.
+ * <code>
+ * The *Loader* class stores the configuration/conditional flags for the Command Line Interface (CLI).
+ * All required & optional params are defined here.
+ *
+ * Usage e.g.
+ *
+ *
+ * In the following examples the `jsqltoxml` JAR resource file is invoked with the required `-s or -sql` field
+ * and the `-x or -xml` field.
+ *
+ * `-s or -sql` - takes the sql statement to be used to query the xml
+ * `-x or -xml` - takes the name/path of the xml file to be queried
+ *
+ * ```bash
+ * # short form
+ * java -jar jsqltoxml.jar -s "select * from engine" -x "country.xml"
+ *
+ * # long form
+ * java -jar jsqltoxml.jar -sql "select * from engine" -xml "country.xml"
+ * ```
+ *
+ * There are several other optional flags that can be passed in that can  be used to perform various task:
+ *
+ *`-t or -type` - takes a ResultType {XML|TRIM|TEXT|DATA} and returns the DATA in the specified type. NB: Note these are
+ * all DATA types, the ELEMENT type should only be used when using the API not the CLI
+ *
+ *`-o or -output` - takes the name of file. When the output flag is used a file is created with the specified name
+ * and the query results are saved within.
+ *</code>
  */
-public class Loader extends Configuration {
+public final class Loader extends Configuration {
 
     /**
      * The sql.
@@ -31,12 +57,13 @@ public class Loader extends Configuration {
     /**
      * The output file.
      */
-    @Option(name = "-output", usage = "Writes resultset to output file", aliases = {"-o"})
+    @Option(name = "-output", usage = "Writes xml result to output file", aliases = {"-o"})
     private String outputFile;
 
     /**
+     *<code>
      * Gets the output file.
-     *
+     *</code>
      * @return the output file
      */
     public String getOutputFile() {
@@ -44,8 +71,9 @@ public class Loader extends Configuration {
     }
 
     /**
+     *<code>
      * Sets the output file.
-     *
+     *</code>
      * @param outputFile
      *         the new output file
      */
@@ -54,8 +82,9 @@ public class Loader extends Configuration {
     }
 
     /**
+     *<code>
      * Gets the sql.
-     *
+     *</code>
      * @return the sql
      */
     public String getSql() {
@@ -63,8 +92,9 @@ public class Loader extends Configuration {
     }
 
     /**
+     *<code>
      * Sets the sql.
-     *
+     *</code>
      * @param sql
      *         the new sql
      */
@@ -73,8 +103,9 @@ public class Loader extends Configuration {
     }
 
     /**
-     * Gets the type. The Default Type is {@link com.uwi.enums.ResultType#XML}
-     *
+     *<code>
+     * Gets the type. The Default Type is **ResultType.XML**
+     *</code>
      * @return the type
      */
     public ResultType getType() {
@@ -82,8 +113,9 @@ public class Loader extends Configuration {
     }
 
     /**
+     *<code>
      * Sets the type.
-     *
+     *</code>
      * @param type
      *         the new type
      */
@@ -92,8 +124,9 @@ public class Loader extends Configuration {
     }
 
     /**
+     *<code>
      * Gets the xml file.
-     *
+     *</code>
      * @return the xml file
      */
     public String getXmlFile() {
@@ -101,8 +134,9 @@ public class Loader extends Configuration {
     }
 
     /**
+     *<code>
      * Sets the xml file.
-     *
+     *</code>
      * @param xmlFile
      *         the new xml file
      */

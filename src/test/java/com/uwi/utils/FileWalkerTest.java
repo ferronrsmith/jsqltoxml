@@ -1,6 +1,5 @@
 package com.uwi.utils;
 
-import com.uwi.utils.FileWalker;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -37,8 +36,8 @@ public class FileWalkerTest {
 
     @Test
     public void testExtension() {
-        assertEquals("java", new FileWalker().getExt("/tmp/junit1087035737113730538/sample4.java"));
-        assertEquals("txt", new FileWalker().getExt("/tmp/junit1087035737113730538/sample5.txt"));
+        assertEquals("java", new FileWalker().getExtension("/tmp/junit1087035737113730538/sample4.java"));
+        assertEquals("txt", new FileWalker().getExtension("/tmp/junit1087035737113730538/sample5.txt"));
     }
 
     private void createAssets() throws IOException {

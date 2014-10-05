@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * The Class JSql.
  */
-public class Spat {
+public final class Spat {
 
     /**
      * Xpath string.
@@ -32,26 +32,6 @@ public class Spat {
      */
     public static String generateXpath(String sql) throws JSQLParserException {
         return visit(sql).getXPath();
-    }
-
-    /**
-     * Parses the sql query and return an element.
-     *
-     * @param xmlfile
-     *         the xmlfile
-     * @param sql
-     *         the sql
-     *
-     * @throws JSQLParserException
-     *         the JSQL parser exception
-     */
-    public static void parse(String xmlfile, String sql) throws JSQLParserException {
-        DefaultSelectVisitor visitor = visit(sql);
-        List<Element> result = new QueryXML<Element>().query(
-                visitor.getXPath(), xmlfile, ResultType.ELEMENT);
-        for (Element aResult : result) {
-            System.out.println(aResult);
-        }
     }
 
     /**
@@ -100,12 +80,22 @@ public class Spat {
      */
     public static List<String> parseXML(String xmlfile, String sql, ResultType type, String outputFile)
             throws JSQLParserException {
+
+        if(type.equals(ResultType.ELEMENT)) {
+            throw new IllegalArgumentException("Cannot process elements with this method!");
+        }
+
         DefaultSelectVisitor visitor = visit(sql);
-        List<String> result = new QueryXML<String>().query(
-                visitor.getXPath(), xmlfile, type);
+        List<String> result = new QueryXML().query(
+                visitor.getXPath(), xmlfile, type).getData();
 
         Misc.saveToFile(outputFile, result);
         return result;
+    }
+    public static List<Element> getElements(String xmlfile, String sql) throws JSQLParserException {
+        DefaultSelectVisitor visitor = visit(sql);
+        return new QueryXML().query(
+                visitor.getXPath(), xmlfile, ResultType.ELEMENT).getElements();
     }
 
     /**

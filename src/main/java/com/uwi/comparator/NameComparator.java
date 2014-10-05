@@ -7,7 +7,7 @@ import java.util.Comparator;
 /**
  * @internal
  */
-public class NameComparator implements Comparator<JavaMethod> {
+public final class NameComparator implements Comparator<JavaMethod> {
 
     public int compare(JavaMethod pO1, JavaMethod pO2) {
         int nameCompare = pO1.getName().compareTo(pO2.getName());

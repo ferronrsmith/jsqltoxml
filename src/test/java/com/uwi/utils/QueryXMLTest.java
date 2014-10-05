@@ -3,6 +3,7 @@ package com.uwi.utils;
 import com.uwi.engine.Spat;
 import com.uwi.enums.ResultType;
 import net.sf.jsqlparser.JSQLParserException;
+import org.dom4j.Element;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,6 +128,17 @@ public class QueryXMLTest {
                 bookXML, "select count(author) from book where year = 2003", ResultType.STRING, "");
         assertEquals(1, results.size());
         assertEquals("6", results.get(0));
+    }
+
+    @Test
+    public void testQueryAttributeRetrieveElementsCountWithCondition() throws JSQLParserException {
+        List<Element> results = Spat.getElements(
+                bookXML, "select count(author) from book where year = 2003");
+        assertEquals(1, results.size());
+        System.out.println(results);
+        Element element = results.get(0);
+        assertEquals("6", element.getText());
+        assertEquals("resultCount", element.getName());
     }
 
     @Test

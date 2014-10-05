@@ -8,35 +8,38 @@ import org.dom4j.io.XMLWriter;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * The <code>Misc</code> class defines static utility methods that is used
+ * <code>
+ * The **Misc** class defines static utility methods that is used
  * through-out the library.
+ * </code>
  */
 public class Misc extends Configuration {
 
     /**
+     * <code>
      * <p>
      * Checks if a CharSequence is whitespace, empty ("") or null.
      * </p>
      * <p/>
-     * <pre>
-     * Misc.isBlank(null)      = true
-     * Misc.isBlank("")        = true
-     * Misc.isBlank(" ")       = true
-     * Misc.isBlank("bob")     = false
-     * Misc.isBlank("  bob  ") = false
-     * </pre>
+     * ```java
+     * Misc.isBlank(null);      //= true
+     * Misc.isBlank("");        //= true
+     * Misc.isBlank(" ");       //= true
+     * Misc.isBlank("bob");     //= false
+     * Misc.isBlank("  bob  "); //= false
+     * ```
+     * </code>
      *
      * @param cs
      *         the CharSequence to check, may be null
      *
-     * @return {@code true} if the CharSequence is null, empty or whitespace
+     * @return **true** if the CharSequence is null, empty or whitespace
      *
      * @since 2.0
      */
@@ -53,16 +56,13 @@ public class Misc extends Configuration {
         return true;
     }
 
-    // -----------------------------------------------------------------------
-
     /**
+     * <code>
      * <p>
-     * Checks whether the <code>String</code> contains only digit characters.
+     * Checks whether the *String* contains only digit characters.
      * </p>
-     * <p/>
-     * <p>
-     * <code>Null</code> and empty String will return <code>false</code>.
-     * </p>
+     * **Null** and empty String will return **false**.
+     * </code>
      *
      * @param str
      *         the <code>String</code> to check
@@ -80,23 +80,25 @@ public class Misc extends Configuration {
     }
 
     /**
+     * <code>
      * <p>
      * Checks if a CharSequence is not empty (""), not null and not whitespace
      * only.
      * </p>
      * <p/>
-     * <pre>
-     * Misc.isNotBlank(null)      = false
-     * Misc.isNotBlank("")        = false
-     * Misc.isNotBlank(" ")       = false
-     * Misc.isNotBlank("bob")     = true
-     * Misc.isNotBlank("  bob  ") = true
-     * </pre>
+     * ```java
+     * Misc.isNotBlank(null);      // = false
+     * Misc.isNotBlank("");        // = false
+     * Misc.isNotBlank(" ");       // = false
+     * Misc.isNotBlank("bob");     // = true
+     * Misc.isNotBlank("  bob  "); // = true
+     * ```
+     * </code>
      *
      * @param cs
      *         the CharSequence to check, may be null
      *
-     * @return {@code true} if the CharSequence is not empty and not null and
+     * @return **true** if the CharSequence is not empty and not null and
      * not whitespace
      */
     public static boolean isNotBlank(CharSequence cs) {
@@ -104,10 +106,12 @@ public class Misc extends Configuration {
     }
 
     /**
+     * <code>
      * Properly formats XML document
+     * </code>
      *
      * @param xml
-     *         the xml
+     *         the xml document
      *
      * @return the string
      */
@@ -136,22 +140,26 @@ public class Misc extends Configuration {
     }
 
     /**
+     * <code>
      * Reads a file contents into a string
+     * </code>
      *
      * @param path
      *         - file path
      *
-     * @return
+     * @return string with file contents
      *
      * @throws IOException
      */
     public static String readFilesToString(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, Charset.forName("UTF-8"));
+        return new String(encoded, StandardCharsets.UTF_8);
     }
 
     /**
-     * Save to file.
+     * <code>
+     * Save data to file.
+     * </code>
      *
      * @param outFile
      *         the out file
@@ -171,26 +179,30 @@ public class Misc extends Configuration {
     }
 
     /**
+     * <code>
      * Unconditionally close a <code>Closeable</code>.
-     * <p>
-     * Equivalent to {@link Closeable#close()}, except any exceptions will be ignored.
+     * <p/>
+     * Equivalent to **Closeable#close()**, except any exceptions will be ignored.
      * This is typically used in finally blocks.
-     * <p>
+     * <p/>
      * Example code:
-     * <pre>
-     *   Closeable closeable = null;
-     *   try {
-     *       closeable = new FileReader("foo.txt");
-     *       // process closeable
-     *       closeable.close();
-     *   } catch (Exception e) {
-     *       // error handling
-     *   } finally {
-     *       IOUtils.closeQuietly(closeable);
-     *   }
-     * </pre>
+     * ```java
+     * Closeable closeable = null;
+     * try {
+     * closeable = new FileReader("foo.txt");
+     * // process closeable
+     * closeable.close();
+     * } catch (Exception e) {
+     * // error handling
+     * } finally {
+     * IOUtils.closeQuietly(closeable);
+     * }
+     * ```
+     * </code>
      *
-     * @param closeable the object to close, may be null or already closed
+     * @param closeable
+     *         the object to close, may be null or already closed
+     *
      * @since 2.0
      */
     public static void closeQuietly(Closeable closeable) {

@@ -9,9 +9,21 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 /**
- * The Class ExpressionHash.
+ * <code>
+ * The *ExpressionHash* class keeps track of the SQL Expression **( KeyValue )** as the Visitor traverses each portion.
+ * At each level of the Visitor "Tree" there are at most two expressions.
+ *
+ * e.g.
+ *```sql
+ * id = '2323aa' AND author = "J.K Rowling"
+ * ```
+ *
+ * The ExpressionHash merges all sub-level expressions into one, all the way down until the right-most part of the SQL
+ * Expression **( KeyValue )** has been processed. The result of this is a partial XPATH expression that is returned
+ * to the requested class for further processing/merging.
+ * </code>
  */
-public class ExpressionHash extends Configuration {
+public final class ExpressionHash extends Configuration {
 
     /**
      * The bucket.
@@ -32,41 +44,48 @@ public class ExpressionHash extends Configuration {
     }
 
     /**
-     * Adds the a KeyValue to a bucket. The {@link KeyValue#getMetaData()}
+     * <code>
+     * Adds the a KeyValue to a bucket. The **KeyValue#getMetaData**
      * contains the unique_id for each <b>KeyValue</b>. If the session_id does
      * not exist with the bucket then a new item will be added and the
      * <b>KeyValue</b> added to a list. If the session_id already exists the
      * <b>KeyValue</b> will be appended to the existing list <b>K<session_id>,
      * V<List<KeyValue>></b>
-     *
-     * @param value
-     *         {@link KeyValue} to be added
+     *</code>
+     * @param value - KeyValue to be added the bucket
      *
      * @return the expression hash
      */
     public ExpressionHash add(KeyValue value) {
-        if (bucket.containsKey(value.getMetaData())) {
-            bucket.get(value.getMetaData()).add(value);
+        // unique link identifier
+        String key = (String) value.getMetaData();
+        if (bucket.containsKey(key)) {
+            bucket.get(key).add(value);
         } else {
             List<KeyValue> kvs = new ArrayList<KeyValue>();
             kvs.add(value);
-            bucket.put(value.getMetaData().toString(), kvs);
+            bucket.put(key, kvs);
         }
         keyValues.add(value);
         return this;
     }
 
     /**
+     *<code>
      * Cherry pick checks a record for the existence of a <b>key</b> and
-     * <b>session_id</b>. If these values haven't been set, the first record
-     * will be retrieved and its <b>key</b> and <b>session_id</id> assigned to
+     * <b>session_id</b>. If these values haven't been set, the first record from
+     * the list will be retrieved and its <b>key</b> and <b>session_id</id> assigned to
      * the input record.
-     * <p/>
-     * <b>NB:</b> Only two records exist at a given sub-level so the first
-     * record key & session_id would be the same as the input record
+     * <b>NB:</b> Only two records can exist at a given sub-level so the first
+     * record key & session_id should be the same as the input record
      *
-     * @param value
-     *         incomplete {@link KeyValue}
+     *<pre>
+     * |------ id=8jsjjsjs;book = "Harry"
+     *      | ------ op = "AND"
+     *          |------id=8jsjjsjs;author = "J.K Rowlings"
+     *</pre>
+     *</code>
+     * @param value - sub-level **KeyValue**
      *
      * @return the key value
      */
@@ -82,9 +101,10 @@ public class ExpressionHash extends Configuration {
     }
 
     /**
+     * <code>
      * Clear bucket and keyValue lists. Used in cases where a <b>_temp</b>
-     * {@link ExpressionHash} is created and must be cleared for re-use
-     *
+     * *ExpressionHash* is created and must be cleared for re-use
+     *</code>
      * @return the expression hash
      */
     public ExpressionHash clear() {
@@ -94,10 +114,11 @@ public class ExpressionHash extends Configuration {
     }
 
     /**
-     * The following function flattens a bucket of {@link KeyValue} list into a
+     * <code>
+     * The following function flattens a bucket of **KeyValue** list into a
      * <b>grouped & flatten</b> form that can be later merged with other
      * expressions.
-     *
+     *</code>
      * @return the list
      */
     public List<KeyValue> flatten() {
@@ -133,10 +154,10 @@ public class ExpressionHash extends Configuration {
     }
 
     /**
-     * Checks the {@link KeyValue#getValue()} for paren.
-     *
-     * @param kv
-     *         {@link KeyValue} object
+     * <code>
+     * Checks the **KeyValue#getValue()** for paren.
+     *</code>
+     * @param kv - KeyValue object
      *
      * @return true, if successful
      */
@@ -145,16 +166,16 @@ public class ExpressionHash extends Configuration {
     }
 
     /**
+     * </code>
      * Checks for paren.
-     * <p/>
-     * <pre>
-     * 	e.g. the following expression consists of parenthesis
-     *  hasParen("select * from"); 	-> false;
-     *  hasParen("(name)"); 		-> true;
-     *  hasParen("(name "); 		-> false;
-     *  hasParen("name)"); 			-> false;
-     * </pre>
-     *
+     * ```java
+     * 	// e.g. the following expression consists of parenthesis
+     *  hasParen("select * from"); 	//-> false;
+     *  hasParen("(name)"); 		//-> true;
+     *  hasParen("(name "); 		//-> false;
+     *  hasParen("name)"); 			//-> false;
+     * ```
+     *</code>
      * @param input
      *         the value to be checked
      *
@@ -165,8 +186,24 @@ public class ExpressionHash extends Configuration {
     }
 
     /**
-     * Converts a list of {@link KeyValue} to a space delimited string.
+     *<code>
+     * Converts a list of **KeyValue** to a space delimited string.
      *
+     * e.g.
+     * ```java
+     * [
+     *  { key=or,value=name/text()='India' and food/text()='roti',metadata=2ccgm7g3uogfonfie8mtcgrp0n },
+     *  { key=or,value=food/text()='barfi',metadata=pvgasoj8v4hs09jsqpov2hidlr }
+     * ]
+     * ```
+     *
+     * converted to :
+     *
+     * ```java
+     *  name/text()='India' and food/text()='roti' or food/text()='barfi'
+     * ```
+     *
+     *</code>
      * @param kList
      *         the k list
      *
@@ -187,8 +224,23 @@ public class ExpressionHash extends Configuration {
     }
 
     /**
-     * Merge.
+     * <code>
+     * Converts a list of flattened KeyValue pairs into a string.
      *
+     * e.g.
+     * ```java
+     * [
+     *  { key=or,value=name/text()='India' and food/text()='roti',metadata=2ccgm7g3uogfonfie8mtcgrp0n },
+     *  { key=or,value=food/text()='barfi',metadata=pvgasoj8v4hs09jsqpov2hidlr }
+     * ]
+     * ```
+     *
+     * will be flatten to :
+     *
+     * ```java
+     *  name/text()='India' and food/text()='roti' or food/text()='barfi'
+     * ```
+     * </code>
      * @return the string
      */
     public String merge() {
@@ -196,12 +248,13 @@ public class ExpressionHash extends Configuration {
     }
 
     /**
-     * Merge paren.
+     *<code>
+     *     Invokes the merge function and wraps the result in params
+     *</code>
      *
      * @return the string
      */
     public String mergeParen() {
         return i18n("c_param_exp", merge());
     }
-
 }

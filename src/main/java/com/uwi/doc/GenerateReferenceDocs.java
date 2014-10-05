@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 /**
  * @internal
  */
-public class GenerateReferenceDocs {
+public final class GenerateReferenceDocs {
 
     private static final String DIST_DOCS = "./docs/";
     private static final Pattern IN_PARENS = Pattern.compile("public\\s+([^\\(]+)\\(([^\\)]*)");

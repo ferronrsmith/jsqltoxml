@@ -43,7 +43,7 @@ import java.util.Set;
  * ```
  * </code>
  */
-public class ColumnNameFinder extends AbstractColumnNameFinder {
+public final class ColumnNameFinder extends AbstractColumnNameFinder {
 
     /**
      * The columns_.

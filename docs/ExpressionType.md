@@ -8,7 +8,6 @@
 - [parse(BinaryExpression exp)](#95763230)  returns ExpressionType
 - [parse(Class clazz)](#-1237794578)  returns ExpressionType
 - [parse(String value)](#-1311492622)  returns ExpressionType
-- [toString()](#1774939245)  returns String
 
 
 #### <span style="font-size:12px;color:#AAAAAA">String</span> <a style="font-size:16px;" name="1268464124">getValue</a><span style="font-size:16px;">()</span>
@@ -31,6 +30,4 @@
         the value
 
 - <b>returns</b>: the expression type
-
-#### <span style="font-size:12px;color:#AAAAAA">String</span> <a style="font-size:16px;" name="1774939245">toString</a><span style="font-size:16px;">()</span>
 
