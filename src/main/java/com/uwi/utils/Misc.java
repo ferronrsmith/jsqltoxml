@@ -19,7 +19,7 @@ import java.util.List;
  * through-out the library.
  * </code>
  */
-public class Misc extends Configuration {
+public final class Misc extends Configuration {
 
     /**
      * <code>
@@ -116,7 +116,6 @@ public class Misc extends Configuration {
      * @return the string
      */
     public static String prettyPrint(final String xml) {
-
         if (Misc.isBlank(xml)) {
             throw new RuntimeException("xml was null or blank in prettyPrint()");
         }

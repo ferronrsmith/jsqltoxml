@@ -83,7 +83,7 @@ public final class Loader extends Configuration {
 
     /**
      *<code>
-     * Gets the sql.
+     * Gets the sql statement that was passed in.
      *</code>
      * @return the sql
      */
@@ -93,7 +93,7 @@ public final class Loader extends Configuration {
 
     /**
      *<code>
-     * Sets the sql.
+     * Sets the sql statment
      *</code>
      * @param sql
      *         the new sql
@@ -104,7 +104,7 @@ public final class Loader extends Configuration {
 
     /**
      *<code>
-     * Gets the type. The Default Type is **ResultType.XML**
+     * Retrnst the ResultType. The Default Type is **ResultType.XML**
      *</code>
      * @return the type
      */
@@ -114,7 +114,7 @@ public final class Loader extends Configuration {
 
     /**
      *<code>
-     * Sets the type.
+     * Sets the ResultType.
      *</code>
      * @param type
      *         the new type
@@ -125,7 +125,7 @@ public final class Loader extends Configuration {
 
     /**
      *<code>
-     * Gets the xml file.
+     * Gets the xml file name/path
      *</code>
      * @return the xml file
      */
@@ -135,7 +135,7 @@ public final class Loader extends Configuration {
 
     /**
      *<code>
-     * Sets the xml file.
+     * Sets the xml file path
      *</code>
      * @param xmlFile
      *         the new xml file

@@ -1,7 +1,11 @@
 ![SPAT](spat.jpg) KeyValue
 =====
 
-KeyValue
+
+The Class *KeyValue* is a container class that is used to store
+<K,V> throughout the library. The metaData Object is used to store additional
+information about the value contained within the class.
+
 
 
 
@@ -16,7 +20,6 @@ KeyValue
 - [setKey(String key)](#-1140452818)  returns KeyValue
 - [setMetaData(Object metaData)](#644391344)  returns KeyValue
 - [setValue(String value)](#158311534)  returns KeyValue
-- [toString()](#1774939245)  returns String
 
 
 <a name="-1694975245">KeyValue</a>()
@@ -60,6 +63,4 @@ KeyValue
         the new value
 
 - <b>returns</b>: the key value
-
-#### <span style="font-size:12px;color:#AAAAAA">String</span> <a style="font-size:16px;" name="1774939245">toString</a><span style="font-size:16px;">()</span>
 

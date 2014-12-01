@@ -14,6 +14,7 @@ import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.expression.IntervalExpression;
 import net.sf.jsqlparser.expression.JdbcNamedParameter;
 import net.sf.jsqlparser.expression.JdbcParameter;
+import net.sf.jsqlparser.expression.JsonExpression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.NullValue;
 import net.sf.jsqlparser.expression.OracleHierarchicalExpression;
@@ -37,6 +38,7 @@ import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.expression.operators.relational.IsNullExpression;
 import net.sf.jsqlparser.expression.operators.relational.Matches;
 import net.sf.jsqlparser.expression.operators.relational.RegExpMatchOperator;
+import net.sf.jsqlparser.expression.operators.relational.RegExpMySQLOperator;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.SubSelect;
 
@@ -489,6 +491,16 @@ public abstract class AbstractExpressionVisitor extends Configuration implements
     @Override
     public void visit(RegExpMatchOperator rexpr) {
         throw new UnsupportedOperationException(i18n("no_support"));
-
     }
+
+    @Override
+    public void visit(JsonExpression jsonExpr) {
+        throw new UnsupportedOperationException(i18n("no_support"));
+    }
+
+    @Override
+    public void visit(RegExpMySQLOperator regExpMySQLOperator) {
+        throw new UnsupportedOperationException(i18n("no_support"));
+    }
+
 }

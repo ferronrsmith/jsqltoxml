@@ -3,7 +3,10 @@ package com.uwi.enums;
 import net.sf.jsqlparser.expression.BinaryExpression;
 
 /**
- * The Enum ExpressionType.
+ * <code>
+ * The ExpressionType Enum keeps track of all the supported BinaryExpression.
+ * Currently only OR, AND & LIKE expressions are supported.
+ * </code>
  */
 public enum ExpressionType {
 
@@ -43,7 +46,9 @@ public enum ExpressionType {
     }
 
     /**
-     * Parses the.
+     * The following function takes a BinaryExpression, parses its
+     * name and determine the type of expression. If the expression
+     * type is not supported a value of null will be returned.
      *
      * @param exp
      *         the exp
@@ -55,19 +60,9 @@ public enum ExpressionType {
     }
 
     /**
-     * Parses the.
-     *
-     * @param clazz
-     *         the clazz
-     *
-     * @return the expression type
-     */
-    public static ExpressionType parse(Class<BinaryExpression> clazz) {
-        return parse(clazz.getSimpleName());
-    }
-
-    /**
-     * Parses the.
+     * The following function takes a class name or type name
+     * and determine it's type. If the expression
+     * type is not supported a value of null will be returned.
      *
      * @param value
      *         the value
@@ -86,7 +81,7 @@ public enum ExpressionType {
 
     /**
      * Gets the value.
-     *
+     * @internal
      * @return the value
      */
     public String getValue() {

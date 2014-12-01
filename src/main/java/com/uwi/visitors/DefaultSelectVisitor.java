@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 /**
  * The Class DefaultSelectVisitor.
+ * @internal
  */
 public class DefaultSelectVisitor extends AbstractSelectVisitor {
 
@@ -57,7 +58,7 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
      *
      * @return the string
      */
-    private String addNode(List<SelectItem> selectItems, String table) {
+    private String generateXPATH(List<SelectItem> selectItems, String table) {
         StringBuilder sb = new StringBuilder();
         List<String> columns = new ColumnNameFinder(
                 selectItems, table, whereClause).getColumnNames();
@@ -115,21 +116,15 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
     }
 
     /**
-     * Gets the select portion of SQL query.
+     * <code>
+     *     Returns the generated XPATH Expression
+     * </code>
      *
      * @return the select
      */
     public String getXPath() {
         return xpath;
     }
-
-	/*
-     * (non-Javadoc)
-	 *
-	 * @see
-	 * net.sf.jsqlparser.statement.select.SelectVisitor#visit(net.sf.jsqlparser
-	 * .statement.select.PlainSelect)
-	 */
 
     /**
      * Visit.
@@ -140,6 +135,6 @@ public class DefaultSelectVisitor extends AbstractSelectVisitor {
     @Override
     public void visit(PlainSelect plainSelect) {
         whereClause = expressionVisitor.getWhereClause(plainSelect.getWhere());
-        xpath = addNode(plainSelect.getSelectItems(), tables.get(0));
+        xpath = generateXPATH(plainSelect.getSelectItems(), tables.get(0));
     }
 }

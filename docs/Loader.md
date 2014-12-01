@@ -54,21 +54,21 @@ Gets the output file.
 #### <span style="font-size:12px;color:#AAAAAA">String</span> <a style="font-size:16px;" name="1965501849">getSql</a><span style="font-size:16px;">()</span>
 - <b>returns</b>: the sql
 
-Gets the sql.
+Gets the sql statement that was passed in.
 
 
 
 #### <span style="font-size:12px;color:#AAAAAA">ResultType</span> <a style="font-size:16px;" name="837210289">getType</a><span style="font-size:16px;">()</span>
 - <b>returns</b>: the type
 
-Gets the type. The Default Type is **ResultType.XML**
+Retrnst the ResultType. The Default Type is **ResultType.XML**
 
 
 
 #### <span style="font-size:12px;color:#AAAAAA">String</span> <a style="font-size:16px;" name="-1997534274">getXmlFile</a><span style="font-size:16px;">()</span>
 - <b>returns</b>: the xml file
 
-Gets the xml file.
+Gets the xml file name/path
 
 
 
@@ -86,7 +86,7 @@ Sets the output file.
         the new sql
 
 
-Sets the sql.
+Sets the sql statment
 
 
 
@@ -95,7 +95,7 @@ Sets the sql.
         the new type
 
 
-Sets the type.
+Sets the ResultType.
 
 
 
@@ -104,7 +104,7 @@ Sets the type.
         the new xml file
 
 
-Sets the xml file.
+Sets the xml file path
 
 
 

@@ -35,7 +35,7 @@ public class XMLUtil {
             if(type.equals(ResultType.ELEMENT)) {
                 return elements;
             }
-            throw new IllegalArgumentException("Only ResultType Element can be used with this Processor");
+            throw new IllegalArgumentException("Only ResultType.ELEMENT can be used with this Processor");
         }
     };
 

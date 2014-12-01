@@ -2,9 +2,9 @@ package com.uwi.visitors;
 
 import com.uwi.ds.BinaryExpressionTree;
 import com.uwi.ds.ExpressionHash;
+import com.uwi.ds.KeyValue;
 import com.uwi.enums.ConditionType;
 import com.uwi.enums.ExpressionType;
-import com.uwi.ds.KeyValue;
 import com.uwi.utils.LinkIdentifierGenerator;
 import com.uwi.utils.Misc;
 import com.uwi.visitors.abst.AbstractExpressionVisitor;
@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 /**
  * The Class DefaultExpressionVisitor.
+ * @internal
  */
 public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
@@ -185,6 +186,13 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
         _temp.clear();
     }
 
+    /**
+     * The following function processes the special case `attr` functionality.
+     * (attr|atr) is removed and the substring *table_name* is returned to be used
+     * in xpath attribute processing
+     * @param expression - BinaryExpression
+     * @return substring
+     */
     private String processAttr(BinaryExpression expression) {
         String[] str = expression.getLeftExpression().toString().split("_");
         String exp = expression.getStringExpression();
@@ -194,7 +202,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param parenthesis
      *         the parenthesis
      */
@@ -208,7 +216,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param andExpression
      *         the and expression
      */
@@ -219,7 +227,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param orExpression
      *         the or expression
      */
@@ -230,7 +238,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param equalsTo
      *         the equals to
      */
@@ -241,7 +249,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param greaterThan
      *         the greater than
      */
@@ -252,7 +260,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param greaterThanEquals
      *         the greater than equals
      */
@@ -263,13 +271,12 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param likeExpression
      *         the like expression
      */
     @Override
     public void visit(LikeExpression likeExpression) {
-        // TODO Auto-generated method stub
         tree.add(
                 new KeyValue(
                         ExpressionType.LIKE.getValue(), likeOperand(likeExpression),
@@ -278,7 +285,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param minorThan
      *         the minor than
      */
@@ -289,7 +296,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param minorThanEquals
      *         the minor than equals
      */
@@ -300,7 +307,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit.
-     *
+     * @internal
      * @param notEqualsTo
      *         the not equals to
      */
@@ -311,7 +318,7 @@ public class DefaultExpressionVisitor extends AbstractExpressionVisitor {
 
     /**
      * Visit binary expression.
-     *
+     * @internal
      * @param binaryExpression
      *         the binary expression
      */

@@ -5,9 +5,11 @@ import com.uwi.config.Configuration;
 import java.io.Serializable;
 
 /**
- * The Class <code>KeyValue</code> is a container class that is used to store
+ * <code>
+ * The Class *KeyValue* is a container class that is used to store
  * <K,V> throughout the library. The metaData Object is used to store additional
  * information about the value contained within the class.
+ * </code>
  */
 public final class KeyValue extends Configuration implements Serializable {
 
@@ -35,7 +37,7 @@ public final class KeyValue extends Configuration implements Serializable {
      * Instantiates a new key value.
      */
     public KeyValue() {
-        // default contructor
+        // default constructor
     }
 
     /**
@@ -120,10 +122,8 @@ public final class KeyValue extends Configuration implements Serializable {
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
+    /**
+     * @internal
      */
     @Override
     public String toString() {

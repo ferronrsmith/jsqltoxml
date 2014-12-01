@@ -1,12 +1,17 @@
 package com.uwi.ds;
 
-import com.uwi.enums.ExpressionType;
 import com.uwi.config.Configuration;
+import com.uwi.enums.ExpressionType;
 import com.uwi.utils.LinkIdentifierGenerator;
 import net.sf.jsqlparser.expression.BinaryExpression;
 
 /**
- * The Class ExpressionPair.
+ * <code>
+ * An ExpressionPair is an internal Data Structure used by **BinaryExpressionTree**.
+ * An ExpressionPair consists of an <a href="https://github.com/ferronrsmith/jsqltoxml/blob/master/docs/ExpressionType.md">ExpressionType</a>
+ * and a BinaryExpression. The ExpressionType is derived from the BinaryExpression Type. which is then passed to a
+ * parser which will determine if the type is supported by the JSQLParser.
+ * </code>
  */
 public final class ExpressionPair extends Configuration {
 
@@ -26,10 +31,12 @@ public final class ExpressionPair extends Configuration {
     String _id;
 
     /**
+     *<code>
      * Instantiates a new expression pair.
-     *
+     * The type will be derived from the BinaryExpression and added into the ExpressionPair
+     *</code>
      * @param exp
-     *         the exp
+     *         BinaryExpression
      */
     public ExpressionPair(BinaryExpression exp) {
         this(ExpressionType.parse(exp), exp);
@@ -55,8 +62,9 @@ public final class ExpressionPair extends Configuration {
     }
 
     /**
+     *<code>
      * Gets the expression.
-     *
+     *</code>
      * @return the expression
      */
     public BinaryExpression getExpression() {
@@ -64,8 +72,9 @@ public final class ExpressionPair extends Configuration {
     }
 
     /**
+     * <code>
      * Sets the expression.
-     *
+     *</code>
      * @param expression
      *         the new expression
      */
@@ -74,8 +83,9 @@ public final class ExpressionPair extends Configuration {
     }
 
     /**
-     * Gets the id.
-     *
+     * <code>
+     * Returns the ExpressionPair unique identifier
+     * </code>
      * @return the id
      */
     public String getId() {
@@ -83,8 +93,10 @@ public final class ExpressionPair extends Configuration {
     }
 
     /**
-     * Sets the id.
-     *
+     *<code>
+     * Sets the id. The identifier is usually an unique identifier
+     * That's generated from the **LinkIdentifierGenerator** class
+     *</code>
      * @param _id
      *         the new id
      */
@@ -93,8 +105,9 @@ public final class ExpressionPair extends Configuration {
     }
 
     /**
-     * Gets the type.
-     *
+     *<code>
+     * Gets the ExpressionType.
+     *</code>
      * @return the type
      */
     public ExpressionType getType() {
@@ -102,8 +115,9 @@ public final class ExpressionPair extends Configuration {
     }
 
     /**
-     * Sets the type.
-     *
+     * <code>
+     * Sets the ExpressionType.
+     *</code>
      * @param type
      *         the new type
      */
